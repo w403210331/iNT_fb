@@ -17,12 +17,33 @@ $(function(){
     $(".addkey").click(function(){
         var kwd = this.id;
         var kwds = document.getElementById('keywords').value;
-        if(kwds == ''){
+        if(kwds==''){
             kwds = kwd;
-        } else {
-            kwds = kwds + '+' + kwd
         }
-        document.getElementById("keywords").value=kwds;
+        var arr = kwds.split('+');
+        var has = false;
+        for (var i=0; i<arr.length; i++){
+            if (kwd==arr[i]) {
+                has = true;
+                break;
+            }
+        }
+        if(!has){
+            arr.push(kwd);
+        }
+        document.getElementById("keywords").value=arr.join('+');
+    })
+    $(".delkey").click(function(){
+        var kwd = this.id;
+        var kwds = document.getElementById('keywords').value;
+        var arr = kwds.split('+');
+        var newarr = new Array();
+        for (var i=0; i<arr.length; i++){
+            if (kwd!=arr[i]) {
+                newarr.push(arr[i]);
+            }
+        }
+        document.getElementById("keywords").value=newarr.join('+');
     })
 })
 </script>
@@ -51,14 +72,15 @@ $(function(){
         <a href={{ url_for( 'show_reviews_has_keyword', product_id=product_id, keywords=wd ) }}><font color="red"> {{ wd }} </font> </a>
         </span>
         <span>
-          <!-- <form action="{{ url_for('ignore_word', word=wd ) }}" method="post" style="float: left;">
-            <input type="submit" value="Ignore Word"> -->
           <form action="" method="post" style="float: left;">
             <input type="button" value="Ignore Word" class="ignore" id="{{wd}}">
           </form>
         </span>
         <span>
           <input type="button" value="+" class="addkey" id="{{wd}}" style="float: left;">
+        </span>
+        <span>
+          <input type="button" value="-" class="delkey" id="{{wd}}" style="float: left;">
         </span>
     </li>
   {% else %}

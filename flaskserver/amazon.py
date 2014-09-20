@@ -33,6 +33,8 @@ def safe( func ):
 
     return wrapper
 
+app.route = safe( app.route )
+
 @safe
 def load_ignore():
     with open( conf.IGNORE_FILE, 'r' ) as f:
@@ -403,6 +405,7 @@ def show_reviews_has_keyword( product_id = None, keywords = None ):
         return render_show_reviews( error = error )
 
     keywords = keywords.lower().split()
+    keywords = list( set( keywords ) )
     rws = search_reviews_has_keywords( product_id, keywords ) or []
 
     return render_show_reviews( reviews = rws, product_id = product_id )
@@ -421,12 +424,16 @@ def search_keywords( product_id = None ):
 
     if request.method == 'POST':
         keywords = request.form[ 'keywords' ].strip()
+        logger.info( 'search_keywords: (' + keywords + ') of ' + product_id )
+
         if '+' in keywords:
-            keywords = keywords.lower.split( '+' )
+            keywords = keywords.lower().split( '+' )
             key = 'and'
         else:
             keywords = keywords.lower().split()
             key = 'or'
+
+        keywords = list( set( keywords ) )
         rws = search_reviews_has_keywords( product_id, keywords, key ) or []
 
         return render_show_reviews( reviews = rws, product_id = product_id )
@@ -462,7 +469,7 @@ def _run():
     #app.debug = True
     app.run( host = conf.HOST, port = conf.PORT,
              #threaded = True,
-             processes = 32 )
+             processes = 16 )
 
 def run():
     while True:

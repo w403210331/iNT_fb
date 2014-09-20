@@ -23,7 +23,7 @@
     <div align=center><a href="{{ url_for( 'order_words', product_id=product_id, num=100 ) }}"> Key Words in Reviews </a></div>
     <div align=center>
       <form action="{{ url_for( 'search_keywords', product_id=product_id ) }}" method="post">
-        <input type="text" name="keywords">
+        <input type="text" name="keywords" id="keywords">
         <input type="submit" value="Search in reviews" id="sword">
       </form>
     </div>
