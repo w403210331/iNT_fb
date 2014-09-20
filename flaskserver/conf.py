@@ -7,7 +7,20 @@ PIDFILE = '/var/run/amazon_flask.pid'
 #HOST = '218.30.108.79'
 HOST = '127.0.0.1'
 PORT = 7001
+PROCESS_NUM = 16
+
+#configure
 URL_FOR_PASS = 'http://218.30.108.79:7000'
+PAGE_ITEMS = 10
+STRIPCHARS = """,.!?:()[]{}"'"""
+
+ARGS_SHOW_REVIEW = ( ( 'error', None ),
+                     ( 'reviews', [] ),
+                     ( 'product_id', None ),
+                     ( 'page', None ),
+                     ( 'pages', None ),
+                     ( 'nums', None ), )
+
 
 SECRET_KEY = 'slasher'
 

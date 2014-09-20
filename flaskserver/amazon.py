@@ -13,8 +13,7 @@ from flask import Flask, \
             request, abort, redirect, url_for, \
             render_template, session, flash
 
-PAGE_ITEMS = 10
-STRIP = """,.!?:()[]{}"'"""
+PAGE_ITEMS = conf.PAGE_ITEMS
 
 app = Flask( __name__ )
 app.secret_key = conf.SECRET_KEY
@@ -154,7 +153,7 @@ def order_review_words( prdid, num ):
 
         text = text.split()
         for t in text:
-            t = t.lower().strip( STRIP )
+            t = t.lower().strip( conf.STRIPCHARS )
             if t in IGNORE_WORDS or ( not t ):
                 continue
 
@@ -367,15 +366,8 @@ def search_product( keywords = None, search_index = 'All', num = 10 ):
 
 def render_show_reviews( **argkv ):
 
-    args_def = ( ( 'error', None ),
-                 ( 'reviews', [] ),
-                 ( 'product_id', None ),
-                 ( 'page', None ),
-                 ( 'pages', None ),
-                 ( 'nums', None ), )
-
     kv = {}
-    for k, v in args_def:
+    for k, v in conf.ARGS_SHOW_REVIEW:
         kv[ k ] = argkv[ k ] if k in argkv else v
 
     return render_template( 'show_reviews.html', **kv )
@@ -469,7 +461,7 @@ def _run():
     #app.debug = True
     app.run( host = conf.HOST, port = conf.PORT,
              #threaded = True,
-             processes = 16 )
+             processes = conf.PROCESS_NUM )
 
 def run():
     while True:

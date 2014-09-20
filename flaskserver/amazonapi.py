@@ -6,11 +6,23 @@ from itertools import islice
 
 import bottlenose
 from lxml import objectify, etree
-#import dateutil.parser
+import dateutil.parser
+
+DOCUMENT =  """
+ResponseGroup:::
+Besides these generic response groups, there are specific ones.
+For example, if you want to return images of the items included in a response,
+you would include the Image response group in the request.
+If you wanted pricing information, you would include the Offer response group in the request.
+To get browse node information, you'd include the BrowseNode response group.
+The specificity of the response groups enables you to return only the information you want.
+----- -----
+"""
 
 
 DOMAINS = {
     'CA': 'ca',
+    'CN': 'cn',
     'DE': 'de',
     'ES': 'es',
     'FR': 'fr',
@@ -315,9 +327,9 @@ class AmazonBrowseNode(object):
     def children(self):
         """This browse node's children in the browse node tree.
 
-    :return:
-    A list of this browse node's children in the browse node tree.
-    """
+        :return:
+        A list of this browse node's children in the browse node tree.
+        """
         children = []
         child_nodes = getattr(self.element, 'Children')
         for child in getattr(child_nodes, 'BrowseNode', []):
