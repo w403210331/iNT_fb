@@ -1,0 +1,69 @@
+{% extends "header.html" %}
+{% block body %}
+<script>
+$(function(){
+    $(".ignore").click(function(){
+        var word = this.id;
+        $.ajax({
+            type : "POST",
+            url  : '/ignore_word/' + word,
+            success:function( rs ){
+                alert(rs);
+                location.reload();
+            },
+            dataType: "html",
+        });
+    })
+    $(".addkey").click(function(){
+        var kwd = this.id;
+        var kwds = document.getElementById('keywords').value;
+        if(kwds == ''){
+            kwds = kwd;
+        } else {
+            kwds = kwds + '+' + kwd
+        }
+        document.getElementById("keywords").value=kwds;
+    })
+})
+</script>
+
+  {% if error %}<p class="error"><strong>Error:</strong> {{ error }}{% endif %}
+
+  {% if product_id %}
+    <div align=center><a href="{{ url_for( 'show_reviews', product_id=product_id, page=1 ) }}"> Show All Reviews of {{ product_id }} </a></div>
+    <div align=center>
+    <form action="{{ url_for( 'search_keywords', product_id=product_id ) }}" method="post"> <dl>
+      <dt>keywords, '+' means AND:
+        <input type="text" size="50" name="keywords" id="keywords">
+        <input type="submit" value="search" id="search">
+      </dt>
+    </dl></form>
+    </div>
+  {% endif %}
+
+  <ul class="words">
+  {% for wd, n in words %}
+    <li>
+      <div><span>
+          | {{ n }} |
+        </span>
+        <span>
+        <a href={{ url_for( 'show_reviews_has_keyword', product_id=product_id, keywords=wd ) }}><font color="red"> {{ wd }} </font> </a>
+        </span>
+        <span>
+          <!-- <form action="{{ url_for('ignore_word', word=wd ) }}" method="post" style="float: left;">
+            <input type="submit" value="Ignore Word"> -->
+          <form action="" method="post" style="float: left;">
+            <input type="button" value="Ignore Word" class="ignore" id="{{wd}}">
+          </form>
+        </span>
+        <span>
+          <input type="button" value="+" class="addkey" id="{{wd}}" style="float: left;">
+        </span>
+    </li>
+  {% else %}
+    <li><em>Not Found Key Words</em></li>
+  {% endfor %}
+  </ul>
+
+{% endblock %}

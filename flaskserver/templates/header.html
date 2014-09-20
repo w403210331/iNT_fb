@@ -1,0 +1,31 @@
+<!doctype html>
+<title>Amazon Reviews</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+<script type=text/javascript src="{{ url_for('static', filename='jquery.js') }}"></script>
+<div class="page">
+  <div class="metanav">
+    <span><a href='/'>Home</a></span>
+    <span> | </span>
+    <span><a href='javascript:history.go(-1)'>Back</a></span>
+    <span> | </span>
+    <span><a href='javascript:history.go(0)'>Refresh</a></span>
+  </div>
+  {% for message in get_flashed_messages() %}
+  <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block body %}{% endblock %}
+<TABLE WIDTH="100%" CELLPADDING=0 CELLSPACING=0 BORDER=0>
+  <TR>
+    <TD ALIGN=right VALIGN=top>
+      <SMALL><FONT SIZE="-1">Created by Slasher</SMALL>
+      <SMALL><FONT SIZE="-1">( mcq.sejust@gmail.com )</SMALL>
+    </TD>
+  </TR>
+  <TR>
+    <TD ALIGN=right VALIGN=top>
+      <SMALL>
+      </SMALL>
+    </TD>
+  </TR>
+</TABLE>
+</div>

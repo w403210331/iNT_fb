@@ -1,0 +1,119 @@
+{% extends "header.html" %}
+{% block body %}
+
+  {% if error %}<p class="error"><strong>Error:</strong> {{ error }}{% endif %}
+
+  {% if page and product_id %}
+    <div>
+      {% if page > 1 %}
+        <a href="{{ url_for( 'show_reviews', product_id=product_id, page=page-1 ) }}">Prev</a>
+      {% else %}
+        Prev
+      {% endif %}
+      <b> {{ page }} </b>
+      {% if pages %}
+          /{{pages}}
+      {% endif %}
+      {% if reviews|length == 10 %}
+        <a href="{{ url_for( 'show_reviews', product_id=product_id, page=page+1 ) }}">Next</a>
+      {% else %}
+        Next
+      {% endif %}
+    </div>
+    <div align=center><a href="{{ url_for( 'order_words', product_id=product_id, num=100 ) }}"> Key Words in Reviews </a></div>
+    <div align=center>
+      <form action="{{ url_for( 'search_keywords', product_id=product_id ) }}" method="post">
+        <input type="text" name="keywords">
+        <input type="submit" value="Search in reviews" id="sword">
+      </form>
+    </div>
+  {% endif %}
+
+  <ul class="reviews">
+    <li>
+      {% if nums and page%}
+        Items: <b><font color="purple">{{10*(page-1)}}-{{10*(page-1)+reviews|length}} of {{nums|safe}}</font></b>
+      {% else %}
+        Items: <b><font color="purple"> {{reviews|length}}</font></b>
+      {% endif %}
+    </li>
+  {% for rw in reviews %}
+    <li>
+      <div>
+        <div>
+          <b>{{ rw.rid }}</b> of <a href={{
+              url_for( 'show_product', product_id=product_id ) }}>
+                                 {{ rw.prdid|safe }}</a>
+        </div>
+        <div>
+          <span>
+            {% if rw.star %}
+              <b>{{ rw.star[0] }}</b> out of {{ rw.star[1] }} stars |
+            {% endif %}
+          </span>
+          <span>
+            {% if rw.num_help_review %}
+              {{ rw.num_help_review[0] }} of {{ rw.num_help_review[1] }}
+              people found the following review helpful |
+            {% endif %}
+          </span>
+          <span>
+            {% if rw.help_text %}
+              <b>{{ rw.help_text|safe }}</b>
+            {% endif %}
+          </span>
+        </div>
+        <div>
+          <span>
+            {% if rw.reviewer %}
+              By: {{ rw.reviewer }} |
+            {% endif %}
+          </span>
+          <span>
+            {% if rw.reviewer_from %}
+              From: {{ rw.reviewer_from }} |
+            {% endif %}
+          </span>
+          <span>
+            {% if rw.date %}
+              <b>{{ rw.date }}</b>
+            {% endif %}
+          </span>
+        </div>
+        <div>
+          {% if rw.rfrom %}
+            This review is from: <b>{{ rw.rfrom }}</b>
+          {% endif %}
+        </div>
+        <div>
+            Review Text: {{ rw.text|safe }}
+        </div>
+      </div>
+    </li>
+  {% else %}
+    <li><em>No reviews here so far</em></li>
+  {% endfor %}
+  </ul>
+
+  <div>
+  {% if page and product_id %}
+    <span>
+      {% if page > 1 %}
+        <a href="{{ url_for( 'show_reviews', product_id=product_id, page=page-1 ) }}">Prev</a>
+      {% else %}
+        Prev
+      {% endif %}
+      <b> {{ page }} </b>
+      {% if pages %}
+          /{{pages}}
+      {% endif %}
+      {% if reviews|length == 10 %}
+        <a href="{{ url_for( 'show_reviews', product_id=product_id, page=page+1 ) }}">Next</a>
+      {% else %}
+        Next
+      {% endif %}
+    </span>
+  {% endif %}
+  </div>
+
+{% endblock %}

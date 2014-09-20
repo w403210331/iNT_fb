@@ -1,0 +1,66 @@
+{% extends "header.html" %}
+{% block body %}
+<script language=Javascript>
+function change(p){
+if (p == 200){
+	//document.sel.submit();
+	;
+}
+return true;
+}
+</script>
+	<h2>Search</h2>
+		{% if error %}<p class="error"><strong>Error:</strong> {{ error }}{% endif %}
+	<form action="{{ url_for( 'search' ) }}" method="post" name="sel"> <dl>
+		<dt>Key Words:
+			<input type="text" name="keywords">
+		</dt>
+		<dt>Search Index:
+			<select name="select_index" id="select_index" onchange="change(200)">
+				<!-- see: http://docs.aws.amazon.com/AWSECommerceService/latest/DG/APPNDX_SearchIndexValues.html -->
+				<option value="All">All</option>
+				<option value="Apparel">Apparel</option>
+				<option value="Appliances">Appliances</option>
+				<option value="ArtsAndCrafts">ArtsAndCrafts</option>
+				<option value="Automotive">Automotive</option>
+				<option value="Baby">Baby</option>
+				<option value="Beauty">Beauty</option>
+				<option value="Books">Books</option>
+				<option value="Classical">Classical</option>
+				<option value="DigitalMusic">DigitalMusic</option>
+				<option value="DVD">DVD</option>
+				<option value="Electronics">Electronics</option>
+				<option value="HealthPersonalCare">HealthPersonalCare</option>
+				<option value="HomeGarden">HomeGarden</option>
+				<option value="Jewelry">Jewelry</option>
+				<option value="KindleStore">KindleStore</option>
+				<option value="Kitchen">Kitchen</option>
+				<option value="MobileApps">MobileApps</option>
+				<option value="Music">Music</option>
+				<option value="Photo">Photo</option>
+				<option value="Shoes">Shoes</option>
+				<option value="Software">Software</option>
+				<option value="Toys" selected="selected">Toys</option>
+				<option value="Video">Video</option>
+				<option value="VideoGames">VideoGames</option>
+				<option value="Watches">Watches</option>
+			</select>
+		</dt>
+		<dt>Number Items:
+			<select name="number" id="number" onchange="change(200)">
+				<option value="5" selected="selected">5</option>
+				<option value="10">10</option>
+				<option value="20">20</option>
+				<option value="50">50</option>
+			</select>
+		</dt>
+		<dd><input type="submit" value="Search"></dd>
+	</dl></form>
+	<h2>Product</h2>
+	<form action="{{ url_for( 'show_product_post' ) }}" method="post"> <dl>
+		<dt>Product ASIN:
+			<input type="text" name="asin">
+		</dt>
+		<dd><input type="submit" value="Show"></dd>
+	</form>
+{% endblock %}

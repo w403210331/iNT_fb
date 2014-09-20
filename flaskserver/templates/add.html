@@ -1,0 +1,12 @@
+{% extends "header.html" %}
+{% block body %}
+  <h2>Add a Product Id</h2>
+  {% if error %}<p class="error"><strong>Error:</strong> {{ error }}{% endif %}
+  <form action="{{ url_for('add') }}" method="post">
+    <dl>
+      <dt>product_id:
+      <dd><input type="text" name="product_id">
+      <dd><input type="submit" value="Add">
+    </dl>
+  </form>
+{% endblock %}

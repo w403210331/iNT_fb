@@ -1,0 +1,430 @@
+[2014-09-17 16:54:23,881,14027-1100843328,amazon.py,97,INFO] search : (u'barbie', u'Toys', 5, {})
+[2014-09-17 16:54:51,026,14037-1100843328,amazon.py,285,INFO] rpush B008BWZJ32 to amazon.products
+[2014-09-17 16:55:54,760,14232-1100843328,amazon.py,76,INFO] get : B008BWZJ32
+[2014-09-17 17:15:47,681,19677-1100843328,amazon.py,76,INFO] get : B008BWZJ32
+[2014-09-17 17:22:31,635,21625-1100843328,amazon.py,97,INFO] search : (u'barbie', u'Toys', 5, {})
+[2014-09-17 17:36:08,495,24930-47649101490624,daemonize.py,186,DEBUG] ---- restarting amazon.py ----
+[2014-09-17 17:36:08,496,24930-47649101490624,daemonize.py,148,DEBUG] get pid failed.[Errno 3] No such process11465
+[2014-09-17 17:36:08,499,24936-47649101490624,daemonize.py,117,DEBUG] write pid:24936
+[2014-09-17 17:36:27,253,24989-47649101490624,amazon.py,97,INFO] search : (u'barbie', u'Toys', 5, {})
+[2014-09-17 17:36:39,294,24991-47649101490624,amazon.py,76,INFO] get : B006O6EIC0
+[2014-09-17 17:37:16,203,25034-47649101490624,amazon.py,76,INFO] get : B006O6EIC0
+[2014-09-17 17:38:44,228,25064-47649101490624,amazon.py,76,INFO] get : B006O6EIC0
+[2014-09-17 17:40:19,129,26970-47825066256832,daemonize.py,186,DEBUG] ---- restarting amazon.py ----
+[2014-09-17 17:40:19,132,26976-47825066256832,daemonize.py,117,DEBUG] write pid:26976
+[2014-09-17 17:40:19,138,26976-47825066256832,amazon.py,450,ERROR] error(98, 'Address already in use')
+Traceback (most recent call last):
+  File "amazon.py", line 448, in run
+    _run()
+  File "amazon.py", line 442, in _run
+    processes = 32 )
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Flask-0.11_dev-py2.6.egg/flask/app.py", line 817, in run
+    run_simple(host, port, self, **options)
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 624, in run_simple
+    inner()
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 602, in inner
+    passthrough_errors, ssl_context).serve_forever()
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 509, in make_server
+    passthrough_errors, ssl_context)
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 491, in __init__
+    passthrough_errors, ssl_context)
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 440, in __init__
+    HTTPServer.__init__(self, (host, int(port)), handler)
+  File "/usr/local/python2.6/lib/python2.6/SocketServer.py", line 400, in __init__
+    self.server_bind()
+  File "/usr/local/python2.6/lib/python2.6/BaseHTTPServer.py", line 108, in server_bind
+    SocketServer.TCPServer.server_bind(self)
+  File "/usr/local/python2.6/lib/python2.6/SocketServer.py", line 411, in server_bind
+    self.socket.bind(self.server_address)
+  File "<string>", line 1, in bind
+error: [Errno 98] Address already in use
+[2014-09-17 17:40:26,209,26978-47059909024192,daemonize.py,186,DEBUG] ---- restarting amazon.py ----
+[2014-09-17 17:40:26,213,26984-47059909024192,daemonize.py,117,DEBUG] write pid:26984
+[2014-09-17 17:40:26,220,26984-47059909024192,amazon.py,450,ERROR] error(98, 'Address already in use')
+Traceback (most recent call last):
+  File "amazon.py", line 448, in run
+    _run()
+  File "amazon.py", line 442, in _run
+    processes = 32 )
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Flask-0.11_dev-py2.6.egg/flask/app.py", line 817, in run
+    run_simple(host, port, self, **options)
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 624, in run_simple
+    inner()
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 602, in inner
+    passthrough_errors, ssl_context).serve_forever()
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 509, in make_server
+    passthrough_errors, ssl_context)
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 491, in __init__
+    passthrough_errors, ssl_context)
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 440, in __init__
+    HTTPServer.__init__(self, (host, int(port)), handler)
+  File "/usr/local/python2.6/lib/python2.6/SocketServer.py", line 400, in __init__
+    self.server_bind()
+  File "/usr/local/python2.6/lib/python2.6/BaseHTTPServer.py", line 108, in server_bind
+    SocketServer.TCPServer.server_bind(self)
+  File "/usr/local/python2.6/lib/python2.6/SocketServer.py", line 411, in server_bind
+    self.socket.bind(self.server_address)
+  File "<string>", line 1, in bind
+error: [Errno 98] Address already in use
+[2014-09-17 17:40:38,400,27006-47093232277952,daemonize.py,186,DEBUG] ---- stoping amazon.py ----
+[2014-09-17 17:40:47,882,27015-47066109868480,daemonize.py,186,DEBUG] ---- stoping amazon.py ----
+[2014-09-17 17:40:47,882,27015-47066109868480,daemonize.py,148,DEBUG] get pid failed.[Errno 3] No such process26984
+[2014-09-17 17:41:04,397,27089-47301005539776,daemonize.py,186,DEBUG] ---- starting amazon.py ----
+[2014-09-17 17:41:04,401,27095-47301005539776,daemonize.py,117,DEBUG] write pid:27095
+[2014-09-17 17:41:12,332,27101-47301005539776,amazon.py,76,INFO] get : B006O6EIC0
+[2014-09-17 17:43:41,797,27203-47301005539776,amazon.py,76,INFO] get : B008CS5QTW
+[2014-09-17 17:43:43,333,27203-47301005539776,amazon.py,27,ERROR] AsinNotFound('ASIN(s) not found: \'<ItemLookupResponse xmlns="http://webservices.amazon.com/AWSECommerceService/2011-08-01">\n  <OperationRequest>\n    <HTTPHeaders>\n      <Header Name="UserAgent" Value="Python-urllib/2.6"/>\n    </HTTPHeaders>\n    <RequestId>cad62f05-6bfc-4ccf-be20-2e9ce2e05c14</RequestId>\n    <Arguments>\n      <Argument Name="Operation" Value="ItemLookup"/>\n      <Argument Name="Service" Value="AWSECommerceService"/>\n      <Argument Name="Signature" Value="R64WfavLx8E1oQP/UqFb2f6rmFfBgs7sZe8qeQBRzKo="/>\n      <Argument Name="AssociateTag" Value="slasher0f-20"/>\n      <Argument Name="Version" Value="2011-08-01"/>\n      <Argument Name="ItemId" Value="B008CS5QTW"/>\n      <Argument Name="AWSAccessKeyId" Value="AKIAJNUNB45S2LAXFO7Q"/>\n      <Argument Name="Timestamp" Value="2014-09-17T09:43:41Z"/>\n      <Argument Name="ResponseGroup" Value="Large"/>\n    </Arguments>\n    <RequestProcessingTime>0.0333300000000000</RequestProcessingTime>\n  </OperationRequest>\n  <Items>\n    <Request>\n      <IsValid>True</IsValid>\n      <ItemLookupRequest>\n        <IdType>ASIN</IdType>\n        <ItemId>B008CS5QTW</ItemId>\n        <ResponseGroup>Large</ResponseGroup>\n        <VariationPage>All</VariationPage>\n      </ItemLookupRequest>\n      <Errors>\n        <Error>\n          <Code>AWS.ECommerceService.ItemNotAccessible</Code>\n          <Message>This item is not accessible through the Product Advertising API.</Message>\n        </Error>\n      </Errors>\n    </Request>\n  </Items>\n</ItemLookupResponse>\n\'',)
+Traceback (most recent call last):
+  File "amazon.py", line 25, in wrapper
+    return func( *args, **argkv )
+  File "amazon.py", line 81, in get_product
+    product = handle.lookup( ItemId = product_id )
+  File "/usr/home/shenjie1/amazonapi/flaskserver/amazonapi.py", line 112, in lookup
+    etree.tostring(root, pretty_print=True)))
+AsinNotFound: ASIN(s) not found: '<ItemLookupResponse xmlns="http://webservices.amazon.com/AWSECommerceService/2011-08-01">
+  <OperationRequest>
+    <HTTPHeaders>
+      <Header Name="UserAgent" Value="Python-urllib/2.6"/>
+    </HTTPHeaders>
+    <RequestId>cad62f05-6bfc-4ccf-be20-2e9ce2e05c14</RequestId>
+    <Arguments>
+      <Argument Name="Operation" Value="ItemLookup"/>
+      <Argument Name="Service" Value="AWSECommerceService"/>
+      <Argument Name="Signature" Value="R64WfavLx8E1oQP/UqFb2f6rmFfBgs7sZe8qeQBRzKo="/>
+      <Argument Name="AssociateTag" Value="slasher0f-20"/>
+      <Argument Name="Version" Value="2011-08-01"/>
+      <Argument Name="ItemId" Value="B008CS5QTW"/>
+      <Argument Name="AWSAccessKeyId" Value="AKIAJNUNB45S2LAXFO7Q"/>
+      <Argument Name="Timestamp" Value="2014-09-17T09:43:41Z"/>
+      <Argument Name="ResponseGroup" Value="Large"/>
+    </Arguments>
+    <RequestProcessingTime>0.0333300000000000</RequestProcessingTime>
+  </OperationRequest>
+  <Items>
+    <Request>
+      <IsValid>True</IsValid>
+      <ItemLookupRequest>
+        <IdType>ASIN</IdType>
+        <ItemId>B008CS5QTW</ItemId>
+        <ResponseGroup>Large</ResponseGroup>
+        <VariationPage>All</VariationPage>
+      </ItemLookupRequest>
+      <Errors>
+        <Error>
+          <Code>AWS.ECommerceService.ItemNotAccessible</Code>
+          <Message>This item is not accessible through the Product Advertising API.</Message>
+        </Error>
+      </Errors>
+    </Request>
+  </Items>
+</ItemLookupResponse>
+'
+[2014-09-17 17:44:05,381,27222-47301005539776,amazon.py,76,INFO] get : B008CS5QTW
+[2014-09-17 17:44:06,410,27222-47301005539776,amazon.py,27,ERROR] AsinNotFound('ASIN(s) not found: \'<ItemLookupResponse xmlns="http://webservices.amazon.com/AWSECommerceService/2011-08-01">\n  <OperationRequest>\n    <HTTPHeaders>\n      <Header Name="UserAgent" Value="Python-urllib/2.6"/>\n    </HTTPHeaders>\n    <RequestId>fe328d52-811f-43f6-bd25-162e958950f9</RequestId>\n    <Arguments>\n      <Argument Name="Operation" Value="ItemLookup"/>\n      <Argument Name="Service" Value="AWSECommerceService"/>\n      <Argument Name="Signature" Value="u4zXRy+ZIew+o6aL/D1x6ZVXFRcZCKVW6IpkR3OMSNU="/>\n      <Argument Name="AssociateTag" Value="slasher0f-20"/>\n      <Argument Name="Version" Value="2011-08-01"/>\n      <Argument Name="ItemId" Value="B008CS5QTW"/>\n      <Argument Name="AWSAccessKeyId" Value="AKIAJNUNB45S2LAXFO7Q"/>\n      <Argument Name="Timestamp" Value="2014-09-17T09:44:05Z"/>\n      <Argument Name="ResponseGroup" Value="Large"/>\n    </Arguments>\n    <RequestProcessingTime>0.0338220000000000</RequestProcessingTime>\n  </OperationRequest>\n  <Items>\n    <Request>\n      <IsValid>True</IsValid>\n      <ItemLookupRequest>\n        <IdType>ASIN</IdType>\n        <ItemId>B008CS5QTW</ItemId>\n        <ResponseGroup>Large</ResponseGroup>\n        <VariationPage>All</VariationPage>\n      </ItemLookupRequest>\n      <Errors>\n        <Error>\n          <Code>AWS.ECommerceService.ItemNotAccessible</Code>\n          <Message>This item is not accessible through the Product Advertising API.</Message>\n        </Error>\n      </Errors>\n    </Request>\n  </Items>\n</ItemLookupResponse>\n\'',)
+Traceback (most recent call last):
+  File "amazon.py", line 25, in wrapper
+    return func( *args, **argkv )
+  File "amazon.py", line 81, in get_product
+    product = handle.lookup( ItemId = product_id )
+  File "/usr/home/shenjie1/amazonapi/flaskserver/amazonapi.py", line 112, in lookup
+    etree.tostring(root, pretty_print=True)))
+AsinNotFound: ASIN(s) not found: '<ItemLookupResponse xmlns="http://webservices.amazon.com/AWSECommerceService/2011-08-01">
+  <OperationRequest>
+    <HTTPHeaders>
+      <Header Name="UserAgent" Value="Python-urllib/2.6"/>
+    </HTTPHeaders>
+    <RequestId>fe328d52-811f-43f6-bd25-162e958950f9</RequestId>
+    <Arguments>
+      <Argument Name="Operation" Value="ItemLookup"/>
+      <Argument Name="Service" Value="AWSECommerceService"/>
+      <Argument Name="Signature" Value="u4zXRy+ZIew+o6aL/D1x6ZVXFRcZCKVW6IpkR3OMSNU="/>
+      <Argument Name="AssociateTag" Value="slasher0f-20"/>
+      <Argument Name="Version" Value="2011-08-01"/>
+      <Argument Name="ItemId" Value="B008CS5QTW"/>
+      <Argument Name="AWSAccessKeyId" Value="AKIAJNUNB45S2LAXFO7Q"/>
+      <Argument Name="Timestamp" Value="2014-09-17T09:44:05Z"/>
+      <Argument Name="ResponseGroup" Value="Large"/>
+    </Arguments>
+    <RequestProcessingTime>0.0338220000000000</RequestProcessingTime>
+  </OperationRequest>
+  <Items>
+    <Request>
+      <IsValid>True</IsValid>
+      <ItemLookupRequest>
+        <IdType>ASIN</IdType>
+        <ItemId>B008CS5QTW</ItemId>
+        <ResponseGroup>Large</ResponseGroup>
+        <VariationPage>All</VariationPage>
+      </ItemLookupRequest>
+      <Errors>
+        <Error>
+          <Code>AWS.ECommerceService.ItemNotAccessible</Code>
+          <Message>This item is not accessible through the Product Advertising API.</Message>
+        </Error>
+      </Errors>
+    </Request>
+  </Items>
+</ItemLookupResponse>
+'
+[2014-09-17 17:45:07,160,27350-47301005539776,amazon.py,76,INFO] get : B008CS5QTW
+[2014-09-17 17:45:09,010,27350-47301005539776,amazon.py,27,ERROR] AsinNotFound('ASIN(s) not found: \'<ItemLookupResponse xmlns="http://webservices.amazon.com/AWSECommerceService/2011-08-01">\n  <OperationRequest>\n    <HTTPHeaders>\n      <Header Name="UserAgent" Value="Python-urllib/2.6"/>\n    </HTTPHeaders>\n    <RequestId>595bfd7d-a516-4057-b72e-cf1835a35071</RequestId>\n    <Arguments>\n      <Argument Name="Operation" Value="ItemLookup"/>\n      <Argument Name="Service" Value="AWSECommerceService"/>\n      <Argument Name="Signature" Value="pcKx1nomxVnV3//i17F9sqKqjRZIOCA4t0HZe+YykII="/>\n      <Argument Name="AssociateTag" Value="slasher0f-20"/>\n      <Argument Name="Version" Value="2011-08-01"/>\n      <Argument Name="ItemId" Value="B008CS5QTW"/>\n      <Argument Name="AWSAccessKeyId" Value="AKIAJNUNB45S2LAXFO7Q"/>\n      <Argument Name="Timestamp" Value="2014-09-17T09:45:07Z"/>\n      <Argument Name="ResponseGroup" Value="Large"/>\n    </Arguments>\n    <RequestProcessingTime>0.0318960000000000</RequestProcessingTime>\n  </OperationRequest>\n  <Items>\n    <Request>\n      <IsValid>True</IsValid>\n      <ItemLookupRequest>\n        <IdType>ASIN</IdType>\n        <ItemId>B008CS5QTW</ItemId>\n        <ResponseGroup>Large</ResponseGroup>\n        <VariationPage>All</VariationPage>\n      </ItemLookupRequest>\n      <Errors>\n        <Error>\n          <Code>AWS.ECommerceService.ItemNotAccessible</Code>\n          <Message>This item is not accessible through the Product Advertising API.</Message>\n        </Error>\n      </Errors>\n    </Request>\n  </Items>\n</ItemLookupResponse>\n\'',)
+Traceback (most recent call last):
+  File "amazon.py", line 25, in wrapper
+    return func( *args, **argkv )
+  File "amazon.py", line 81, in get_product
+    product = handle.lookup( ItemId = product_id )
+  File "/usr/home/shenjie1/amazonapi/flaskserver/amazonapi.py", line 112, in lookup
+    etree.tostring(root, pretty_print=True)))
+AsinNotFound: ASIN(s) not found: '<ItemLookupResponse xmlns="http://webservices.amazon.com/AWSECommerceService/2011-08-01">
+  <OperationRequest>
+    <HTTPHeaders>
+      <Header Name="UserAgent" Value="Python-urllib/2.6"/>
+    </HTTPHeaders>
+    <RequestId>595bfd7d-a516-4057-b72e-cf1835a35071</RequestId>
+    <Arguments>
+      <Argument Name="Operation" Value="ItemLookup"/>
+      <Argument Name="Service" Value="AWSECommerceService"/>
+      <Argument Name="Signature" Value="pcKx1nomxVnV3//i17F9sqKqjRZIOCA4t0HZe+YykII="/>
+      <Argument Name="AssociateTag" Value="slasher0f-20"/>
+      <Argument Name="Version" Value="2011-08-01"/>
+      <Argument Name="ItemId" Value="B008CS5QTW"/>
+      <Argument Name="AWSAccessKeyId" Value="AKIAJNUNB45S2LAXFO7Q"/>
+      <Argument Name="Timestamp" Value="2014-09-17T09:45:07Z"/>
+      <Argument Name="ResponseGroup" Value="Large"/>
+    </Arguments>
+    <RequestProcessingTime>0.0318960000000000</RequestProcessingTime>
+  </OperationRequest>
+  <Items>
+    <Request>
+      <IsValid>True</IsValid>
+      <ItemLookupRequest>
+        <IdType>ASIN</IdType>
+        <ItemId>B008CS5QTW</ItemId>
+        <ResponseGroup>Large</ResponseGroup>
+        <VariationPage>All</VariationPage>
+      </ItemLookupRequest>
+      <Errors>
+        <Error>
+          <Code>AWS.ECommerceService.ItemNotAccessible</Code>
+          <Message>This item is not accessible through the Product Advertising API.</Message>
+        </Error>
+      </Errors>
+    </Request>
+  </Items>
+</ItemLookupResponse>
+'
+[2014-09-17 17:46:38,661,27684-47301005539776,amazon.py,76,INFO] get : B000FADVPQ
+[2014-09-17 17:46:45,703,27701-47301005539776,amazon.py,285,INFO] rpush B000FADVPQ to amazon.products
+[2014-09-17 17:46:49,799,27704-47301005539776,amazon.py,76,INFO] get : B000FADVPQ
+[2014-09-17 17:46:56,490,27711-47301005539776,amazon.py,76,INFO] get : B000FADVPQ
+[2014-09-17 17:47:13,826,27722-47301005539776,amazon.py,76,INFO] get : B000FADVPQ
+[2014-09-17 17:54:26,680,30210-47301005539776,amazon.py,76,INFO] get : B000FADVPQ
+[2014-09-17 17:58:49,281,30585-47301005539776,amazon.py,76,INFO] get : B000FADVPQ
+[2014-09-17 18:00:41,088,32388-47301005539776,amazon.py,97,INFO] search : (u'barbie', u'Toys', 5, {})
+[2014-09-17 18:01:39,893,32571-47301005539776,amazon.py,97,INFO] search : (u'barbie', u'Toys', 5, {})
+[2014-09-17 18:01:53,750,32665-47301005539776,amazon.py,97,INFO] search : (u'barbie bla', u'Toys', 5, {})
+[2014-09-17 18:02:31,538,32739-47301005539776,amazon.py,97,INFO] search : (u'C', u'Books', 5, {})
+[2014-09-17 18:02:40,053,32740-47301005539776,amazon.py,285,INFO] rpush 0131103628 to amazon.products
+[2014-09-17 18:02:46,023,32742-47301005539776,amazon.py,285,INFO] rpush 0789751984 to amazon.products
+[2014-09-17 18:02:50,914,32743-47301005539776,amazon.py,285,INFO] rpush 0321928423 to amazon.products
+[2014-09-17 18:03:18,554,350-47301005539776,amazon.py,97,INFO] search : (u'C', u'Books', 5, {})
+[2014-09-17 18:03:34,329,368-47301005539776,amazon.py,97,INFO] search : (u'C', u'Books', 5, {})
+[2014-09-17 18:04:13,146,465-47301005539776,amazon.py,76,INFO] get : 0131103628
+[2014-09-17 20:16:16,167,6455-47301005539776,amazon.py,76,INFO] get : B006O6EIC0
+[2014-09-17 20:16:23,802,6470-47301005539776,amazon.py,285,INFO] rpush B006O6EIC0 to amazon.products
+[2014-09-17 20:17:52,973,6512-47301005539776,amazon.py,97,INFO] search : (u'farrie', u'Beauty', 5, {})
+[2014-09-17 20:18:27,901,6544-47301005539776,amazon.py,97,INFO] search : (u'java', u'Books', 5, {})
+[2014-09-17 20:18:56,386,6545-47301005539776,amazon.py,285,INFO] rpush 0321356683 to amazon.products
+[2014-09-17 20:19:03,457,6555-47301005539776,amazon.py,285,INFO] rpush 0071809252 to amazon.products
+[2014-09-17 20:19:07,933,6556-47301005539776,amazon.py,97,INFO] search : (u'java', u'Books', 5, {})
+[2014-09-17 20:19:21,399,6557-47301005539776,amazon.py,97,INFO] search : (u'java', u'Books', 5, {})
+[2014-09-17 20:19:42,803,6558-47301005539776,amazon.py,97,INFO] search : (u'java', u'Books', 5, {})
+[2014-09-17 20:19:53,724,6564-47301005539776,amazon.py,285,INFO] rpush 0321356683 to amazon.products
+[2014-09-17 21:48:36,934,30108-47301005539776,amazon.py,97,INFO] search : (u'java', u'Books', 5, {})
+[2014-09-18 10:27:01,769,15888-47301005539776,amazon.py,97,INFO] search : (u'barbie', u'Toys', 5, {})
+[2014-09-18 10:27:32,765,15891-47301005539776,amazon.py,97,INFO] search : (u'dae', u'Jewelry', 5, {})
+[2014-09-18 18:48:55,566,348-47301005539776,amazon.py,76,INFO] get : B006O6EIC0
+[2014-09-19 02:38:43,088,1298-47301005539776,amazon.py,97,INFO] search : (u'Barbie', u'Toys', 10, {})
+[2014-09-19 02:41:15,544,3428-47301005539776,amazon.py,97,INFO] search : (u'mobil 1', u'Automotive', 10, {})
+[2014-09-19 02:42:40,198,3476-47301005539776,amazon.py,97,INFO] search : (u'Hasbro', u'Toys', 10, {})
+[2014-09-19 02:43:51,730,3520-47301005539776,amazon.py,97,INFO] search : (u'Transformers', u'Toys', 10, {})
+[2014-09-19 02:45:01,891,3662-47301005539776,amazon.py,97,INFO] search : (u'Barbie', u'Toys', 10, {})
+[2014-09-19 02:48:18,418,3476-47301005539776,amazon.py,27,ERROR] error(104, 'Connection reset by peer')
+Traceback (most recent call last):
+  File "amazon.py", line 25, in wrapper
+    return func( *args, **argkv )
+  File "amazon.py", line 109, in get_search_products
+    for product in products:
+  File "/usr/home/shenjie1/amazonapi/flaskserver/amazonapi.py", line 218, in __iter__
+    for page in self.iterate_pages():
+  File "/usr/home/shenjie1/amazonapi/flaskserver/amazonapi.py", line 230, in iterate_pages
+    yield self._query(ItemPage=self.current_page, **self.kwargs)
+  File "/usr/home/shenjie1/amazonapi/flaskserver/amazonapi.py", line 241, in _query
+    response = self.api.ItemSearch(ResponseGroup=ResponseGroup, **kwargs)
+  File "build/bdist.linux-x86_64/egg/bottlenose/api.py", line 252, in __call__
+    gzipped_file = gzip.GzipFile(fileobj=StringIO(response.read()))
+  File "/usr/local/python2.6/lib/python2.6/socket.py", line 329, in read
+    data = self._sock.recv(rbufsize)
+  File "/usr/local/python2.6/lib/python2.6/httplib.py", line 518, in read
+    return self._read_chunked(amt)
+  File "/usr/local/python2.6/lib/python2.6/httplib.py", line 576, in _read_chunked
+    value.append(self._safe_read(chunk_left))
+  File "/usr/local/python2.6/lib/python2.6/httplib.py", line 615, in _safe_read
+    chunk = self.fp.read(min(amt, MAXAMOUNT))
+  File "/usr/local/python2.6/lib/python2.6/socket.py", line 353, in read
+    data = self._sock.recv(left)
+error: [Errno 104] Connection reset by peer
+[2014-09-19 02:52:11,229,5735-47301005539776,amazon.py,97,INFO] search : (u'transformers age of extinction', u'Toys', 10, {})
+[2014-09-19 02:52:30,342,5737-47301005539776,amazon.py,285,INFO] rpush B00ECV4DNS to amazon.products
+[2014-09-19 02:52:40,612,5739-47301005539776,amazon.py,285,INFO] rpush B00ECV4DCO to amazon.products
+[2014-09-19 02:54:14,085,6212-47301005539776,amazon.py,285,INFO] rpush B00ECV4DNS to amazon.products
+[2014-09-19 02:58:01,510,7014-47301005539776,amazon.py,97,INFO] search : (u'Barbie', u'Toys', 10, {})
+[2014-09-19 03:01:31,217,8959-47301005539776,amazon.py,76,INFO] get : B008BWZJ32
+[2014-09-19 03:07:51,425,9327-47301005539776,amazon.py,97,INFO] search : (u'barbie and her friends', u'Toys', 5, {})
+[2014-09-19 03:07:54,215,9329-47301005539776,amazon.py,97,INFO] search : (u'barbie and her friends', u'Toys', 10, {})
+[2014-09-19 03:20:22,062,13672-47301005539776,amazon.py,97,INFO] search : (u'Barbie', u'Toys', 5, {})
+[2014-09-19 03:28:11,297,14570-47301005539776,amazon.py,97,INFO] search : (u'Eastvita 10 Pairs of Doll Shoes, Fit Barbie Dolls', u'Toys', 10, {})
+[2014-09-19 03:28:51,560,14589-47301005539776,amazon.py,97,INFO] search : (u'Barbie Trunk', u'Toys', 10, {})
+[2014-09-19 04:14:23,981,29888-47301005539776,amazon.py,97,INFO] search : (u'Barbie', u'Toys', 5, {})
+[2014-09-19 16:32:04,888,15247-47301005539776,amazon.py,97,INFO] search : (u'barbie', u'Toys', 5, {})
+[2014-09-20 13:11:26,164,13344-47301005539776,amazon.py,76,INFO] get : B006O6EIC0
+[2014-09-20 13:11:47,757,13363-47301005539776,amazon.py,285,INFO] rpush B006O6EIC0 to amazon.products
+[2014-09-20 13:11:53,097,13366-47301005539776,amazon.py,76,INFO] get : B006O6EIC0
+[2014-09-20 15:43:56,672,21383-47301005539776,amazon.py,76,INFO] get : B006O6EIC0
+[2014-09-20 15:59:25,756,24795-47301005539776,amazon.py,76,INFO] get : B006O6EIC0
+[2014-09-20 16:01:56,834,26768-47301005539776,amazon.py,76,INFO] get : B006O6EIC0
+[2014-09-20 16:02:00,822,26769-47301005539776,amazon.py,285,INFO] rpush B006O6EIC0 to amazon.products
+[2014-09-20 16:08:26,675,27154-47301005539776,amazon.py,76,INFO] get : B006O6EIC0
+[2014-09-20 16:48:24,314,5232-47659991587264,daemonize.py,186,DEBUG] ---- restarting amazon.py ----
+[2014-09-20 16:48:24,317,5238-47659991587264,daemonize.py,117,DEBUG] write pid:5238
+[2014-09-20 16:48:24,323,5238-47659991587264,amazon.py,462,ERROR] error(98, 'Address already in use')
+Traceback (most recent call last):
+  File "amazon.py", line 460, in run
+    _run()
+  File "amazon.py", line 454, in _run
+    processes = 32 )
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Flask-0.11_dev-py2.6.egg/flask/app.py", line 817, in run
+    run_simple(host, port, self, **options)
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 624, in run_simple
+    inner()
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 602, in inner
+    passthrough_errors, ssl_context).serve_forever()
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 509, in make_server
+    passthrough_errors, ssl_context)
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 491, in __init__
+    passthrough_errors, ssl_context)
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 440, in __init__
+    HTTPServer.__init__(self, (host, int(port)), handler)
+  File "/usr/local/python2.6/lib/python2.6/SocketServer.py", line 400, in __init__
+    self.server_bind()
+  File "/usr/local/python2.6/lib/python2.6/BaseHTTPServer.py", line 108, in server_bind
+    SocketServer.TCPServer.server_bind(self)
+  File "/usr/local/python2.6/lib/python2.6/SocketServer.py", line 411, in server_bind
+    self.socket.bind(self.server_address)
+  File "<string>", line 1, in bind
+error: [Errno 98] Address already in use
+[2014-09-20 16:48:34,758,5244-47180432529856,daemonize.py,186,DEBUG] ---- restarting amazon.py ----
+[2014-09-20 16:48:34,761,5250-47180432529856,daemonize.py,117,DEBUG] write pid:5250
+[2014-09-20 16:48:34,769,5250-47180432529856,amazon.py,462,ERROR] error(98, 'Address already in use')
+Traceback (most recent call last):
+  File "amazon.py", line 460, in run
+    _run()
+  File "amazon.py", line 454, in _run
+    processes = 32 )
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Flask-0.11_dev-py2.6.egg/flask/app.py", line 817, in run
+    run_simple(host, port, self, **options)
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 624, in run_simple
+    inner()
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 602, in inner
+    passthrough_errors, ssl_context).serve_forever()
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 509, in make_server
+    passthrough_errors, ssl_context)
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 491, in __init__
+    passthrough_errors, ssl_context)
+  File "/usr/local/python2.6/lib/python2.6/site-packages/Werkzeug-0.10_devdev_20140915-py2.6.egg/werkzeug/serving.py", line 440, in __init__
+    HTTPServer.__init__(self, (host, int(port)), handler)
+  File "/usr/local/python2.6/lib/python2.6/SocketServer.py", line 400, in __init__
+    self.server_bind()
+  File "/usr/local/python2.6/lib/python2.6/BaseHTTPServer.py", line 108, in server_bind
+    SocketServer.TCPServer.server_bind(self)
+  File "/usr/local/python2.6/lib/python2.6/SocketServer.py", line 411, in server_bind
+    self.socket.bind(self.server_address)
+  File "<string>", line 1, in bind
+error: [Errno 98] Address already in use
+[2014-09-20 16:49:07,739,5267-47852991441344,daemonize.py,186,DEBUG] ---- starting amazon.py ----
+[2014-09-20 16:49:07,743,5273-47852991441344,daemonize.py,117,DEBUG] write pid:5273
+[2014-09-20 16:49:36,484,5288-47852991441344,amazon.py,76,INFO] get : B006O6EIC0
+[2014-09-20 16:59:04,047,8325-47852991441344,amazon.py,97,INFO] search : (u'barbie', u'Toys', 5, {})
+[2014-09-20 16:59:47,471,8328-47852991441344,amazon.py,97,INFO] search : (u'mac', u'Electronics', 5, {})
+[2014-09-20 17:00:36,285,10006-47852991441344,amazon.py,291,INFO] rpush B00746Z6RK to amazon.products
+[2014-09-20 17:01:34,257,10136-47852991441344,amazon.py,97,INFO] search : (u'iPhone', u'Toys', 5, {})
+[2014-09-20 17:01:56,868,10154-47852991441344,amazon.py,97,INFO] search : (u'mac', u'Electronics', 20, {})
+[2014-09-20 17:02:45,258,10169-47852991441344,amazon.py,291,INFO] rpush B0096VDM8G to amazon.products
+[2014-09-20 17:03:39,335,10202-47852991441344,amazon.py,97,INFO] search : (u'mac', u'Electronics', 20, {})
+[2014-09-20 17:05:42,571,10382-47852991441344,amazon.py,291,INFO] rpush B00746YZS6 to amazon.products
+[2014-09-20 17:05:46,308,10383-47852991441344,amazon.py,291,INFO] rpush B00GB8GUSQ to amazon.products
+[2014-09-20 17:05:49,264,10384-47852991441344,amazon.py,291,INFO] rpush B004FG793G to amazon.products
+[2014-09-20 17:05:51,475,10385-47852991441344,amazon.py,291,INFO] rpush B007476KRY to amazon.products
+[2014-09-20 17:05:53,562,10386-47852991441344,amazon.py,291,INFO] rpush B004YLCJXC to amazon.products
+[2014-09-20 17:05:55,928,10387-47852991441344,amazon.py,291,INFO] rpush B00153XRZG to amazon.products
+[2014-09-20 17:05:58,266,10388-47852991441344,amazon.py,291,INFO] rpush B0019N889M to amazon.products
+[2014-09-20 17:06:00,578,10389-47852991441344,amazon.py,291,INFO] rpush B0086OE5SA to amazon.products
+[2014-09-20 17:06:03,844,10460-47852991441344,amazon.py,291,INFO] rpush B005R2QXNO to amazon.products
+[2014-09-20 17:06:06,460,10465-47852991441344,amazon.py,291,INFO] rpush B004YLCIC4 to amazon.products
+[2014-09-20 17:06:08,781,10466-47852991441344,amazon.py,291,INFO] rpush B007RRV8PK to amazon.products
+[2014-09-20 17:06:11,686,10467-47852991441344,amazon.py,291,INFO] rpush B00747YRWO to amazon.products
+[2014-09-20 17:06:14,514,10468-47852991441344,amazon.py,291,INFO] rpush B003H05K14 to amazon.products
+[2014-09-20 17:06:16,592,10496-47852991441344,amazon.py,291,INFO] rpush B003955MWO to amazon.products
+[2014-09-20 17:06:19,145,10511-47852991441344,amazon.py,291,INFO] rpush B00LOXEG66 to amazon.products
+[2014-09-20 17:06:23,508,10513-47852991441344,amazon.py,291,INFO] rpush B005L38VRU to amazon.products
+[2014-09-20 17:07:57,510,10546-47852991441344,amazon.py,97,INFO] search : (u'mac', u'Electronics', 20, {})
+[2014-09-20 17:09:11,742,10585-47852991441344,amazon.py,97,INFO] search : (u'mac', u'Electronics', 20, {})
+[2014-09-20 17:11:07,151,10546-47852991441344,amazon.py,27,ERROR] URLError(error(110, 'Connection timed out'),)
+Traceback (most recent call last):
+  File "amazon.py", line 25, in wrapper
+    return func( *args, **argkv )
+  File "amazon.py", line 109, in get_search_products
+    for product in products:
+  File "/usr/home/shenjie1/amazonapi/flaskserver/amazonapi.py", line 218, in __iter__
+    for page in self.iterate_pages():
+  File "/usr/home/shenjie1/amazonapi/flaskserver/amazonapi.py", line 230, in iterate_pages
+    yield self._query(ItemPage=self.current_page, **self.kwargs)
+  File "/usr/home/shenjie1/amazonapi/flaskserver/amazonapi.py", line 241, in _query
+    response = self.api.ItemSearch(ResponseGroup=ResponseGroup, **kwargs)
+  File "build/bdist.linux-x86_64/egg/bottlenose/api.py", line 242, in __call__
+    {'api_url': api_url, 'cache_url': cache_url})
+  File "build/bdist.linux-x86_64/egg/bottlenose/api.py", line 203, in _call_api
+    return urllib2.urlopen(api_request, timeout=self.Timeout)
+  File "/usr/local/python2.6/lib/python2.6/urllib2.py", line 126, in urlopen
+    return _opener.open(url, data, timeout)
+  File "/usr/local/python2.6/lib/python2.6/urllib2.py", line 391, in open
+    response = self._open(req, data)
+  File "/usr/local/python2.6/lib/python2.6/urllib2.py", line 409, in _open
+    '_open', req)
+  File "/usr/local/python2.6/lib/python2.6/urllib2.py", line 369, in _call_chain
+    result = func(*args)
+  File "/usr/local/python2.6/lib/python2.6/urllib2.py", line 1161, in http_open
+    return self.do_open(httplib.HTTPConnection, req)
+  File "/usr/local/python2.6/lib/python2.6/urllib2.py", line 1136, in do_open
+    raise URLError(err)
+URLError: <urlopen error [Errno 110] Connection timed out>
+[2014-09-20 17:57:55,326,24102-47852991441344,amazon.py,76,INFO] get : B00GB8GUSQ
+[2014-09-20 18:55:29,067,10763-47852991441344,amazon.py,272,INFO] OK, ignored ( good )
+[2014-09-20 18:56:45,431,10973-47852991441344,amazon.py,272,INFO] OK, ignored ( five )
+[2014-09-20 18:57:52,846,11051-47852991441344,amazon.py,272,INFO] OK, ignored ( good )
+[2014-09-20 19:04:00,247,13258-47852991441344,amazon.py,272,INFO] OK, ignored ( off )
+[2014-09-20 19:08:46,033,13618-47852991441344,amazon.py,272,INFO] OK, ignored ( off )
+[2014-09-20 19:09:33,103,13642-47852991441344,amazon.py,272,INFO] OK, ignored ( off )
+[2014-09-20 19:10:44,311,15247-47556333959616,daemonize.py,186,DEBUG] ---- starting amazon.py ----
+[2014-09-20 19:10:44,315,15253-47556333959616,daemonize.py,117,DEBUG] write pid:15253
+[2014-09-20 19:11:11,567,15402-47556333959616,amazon.py,272,INFO] OK, ignored ( doesn't )
+[2014-09-20 19:14:01,119,15917-47369096182208,daemonize.py,186,DEBUG] ---- starting amazon.py ----
+[2014-09-20 19:14:01,123,15923-47369096182208,daemonize.py,117,DEBUG] write pid:15923
+[2014-09-20 19:14:17,923,15946-47369096182208,amazon.py,271,INFO] OK, ignored ( fit )
+[2014-09-20 19:14:43,374,15954-47369096182208,amazon.py,271,INFO] OK, ignored ( 13 )
+[2014-09-20 19:14:51,448,15960-47369096182208,amazon.py,271,INFO] OK, ignored ( off )
+[2014-09-20 19:14:59,175,15964-47369096182208,amazon.py,271,INFO] OK, ignored ( even )
+[2014-09-20 19:15:20,914,16295-47369096182208,amazon.py,271,INFO] OK, ignored ( him )
+[2014-09-20 19:15:27,400,16299-47369096182208,amazon.py,271,INFO] OK, ignored ( 8 )
+[2014-09-20 19:50:31,702,25634-47601394092480,daemonize.py,186,DEBUG] ---- starting amazon.py ----
+[2014-09-20 19:50:31,706,25640-47601394092480,daemonize.py,117,DEBUG] write pid:25640
