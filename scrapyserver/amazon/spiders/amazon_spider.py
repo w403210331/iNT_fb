@@ -11,16 +11,90 @@ from amazon.utils.util import first_item, safe, \
                               xpath, f_xpath, first_item_xpath, \
                               xpath_extract, fx_extract, first_item_xpath_extract
 
+@safe
+def get_product_task( prdid ):
+
+    cli = get_cli()
+    d = cli.get( KEY_PRODUCT_TASK.format( p = prdid ) )
+    if d is None:
+        return None
+
+    try:
+        return json.loads( d )
+    except Exception as e:
+        logger.info( 'get task: {p} {d} {e}'.format(
+                    p = prdid, d = repr( d ), e = repr( e ) ) )
+
+@safe
+def set_product_task( prdid ):
+
+    task = { 'prdid' : prdid,
+             'ctime' : time.time() }
+    task_k = KEY_PRODUCT_TASK.format( p = prdid )
+
+    cli = get_cli()
+    cli.set( task_k, json.dumps( task ) )
+
+@safe
+def del_product_reviews( prdid ):
+
+    k = KEY_REVIEW.format( p = prdid )
+
+    cli = get_cli()
+    if cli.exists( k ):
+        cli.delete( k )
+
+def product_is_timeout( prdid ):
+
+    task = get_product_task( prdid )
+    if task is None:
+        return True
+
+    if time.time() - task.get( 'ctime', 0 ) >= CRAWL_PRODUCT_TIMEOUT * 24 * 3600:
+        return True
+
+    return False
+
+def next_product_url():
+
+    cli = get_cli()
+    while True:
+
+        product = cli.lpop( KEY_PRODUCTS )
+        if product is None:
+            logger.info( 'no product in queue ...' )
+            time.sleep( 5 )
+            continue
+
+        try:
+            product = json.loads( product )[ 'asin' ]
+
+            if not product_is_timeout( product ):
+                logger.info( 'product : ' + product + \
+                                ' is not timeout, {day} days'.format(
+                                        day = CRAWL_PRODUCT_TIMEOUT ) )
+                continue
+
+            set_product_task( product )
+            del_product_reviews( product )
+
+            logger.info( 'next product : ' + product )
+            return 'http://www.amazon.com/ss/customer-reviews/' + product
+
+        except Exception as e:
+            logger.exception( repr( e ) )
+
 class AmazonSpider(scrapy.Spider):
 
     name = 'amazon'
     allowed_domains = ( "www.amazon.com", )
 
-    start_urls = [
-            "http://www.amazon.com/ss/customer-reviews/B00IQ8MWBS",
-            ]
-
     url_prev = 'http://www.amazon.com/ss/customer-reviews/'
+
+    #start_urls = [
+    #        "http://www.amazon.com/ss/customer-reviews/B00IQ8MWBS",
+    #        ]
+    start_urls = [ next_product_url() ]
 
     def empty_item( self ):
 
@@ -33,79 +107,6 @@ class AmazonSpider(scrapy.Spider):
             d[ k ] = None
 
         return d
-
-    def product_is_timeout( self, prdid ):
-
-        task = self.get_product_task( prdid )
-        if task is None:
-            return True
-
-        if time.time() - task.get( 'ctime', 0 ) >= CRAWL_PRODUCT_TIMEOUT * 24 * 3600:
-            return True
-
-        return False
-
-    @safe
-    def get_product_task( self, prdid ):
-
-        cli = get_cli()
-        d = cli.get( KEY_PRODUCT_TASK.format( p = prdid ) )
-        if d is None:
-            return None
-
-        try:
-            return json.loads( d )
-        except Exception as e:
-            logger.info( 'get task: {p} {d} {e}'.format(
-                        p = prdid, d = repr( d ), e = repr( e ) ) )
-
-    @safe
-    def set_product_task( self, prdid ):
-
-        task = { 'prdid' : prdid,
-                 'ctime' : time.time() }
-        task_k = KEY_PRODUCT_TASK.format( p = prdid )
-
-        cli = get_cli()
-        cli.set( task_k, json.dumps( task ) )
-
-    @safe
-    def del_product_reviews( self, prdid ):
-
-        k = KEY_REVIEW.format( p = prdid )
-
-        cli = get_cli()
-        if cli.exists( k ):
-            cli.delete( k )
-
-    def next_product_url( self ):
-
-        cli = get_cli()
-        while True:
-
-            product = cli.lpop( KEY_PRODUCTS )
-            if product is None:
-                logger.info( 'no product in queue ...' )
-                time.sleep( 60 )
-                continue
-
-            try:
-                product = json.loads( product )[ 'asin' ]
-
-                if not self.product_is_timeout( product ):
-                    logger.info( 'product : ' + product + \
-                                    ' is not timeout, {day} days'.format(
-                                            day = CRAWL_PRODUCT_TIMEOUT ) )
-                    continue
-
-                self.set_product_task( product )
-                self.del_product_reviews( product )
-
-                logger.info( 'next product : ' + product )
-                return self.url_prev + product
-
-            except Exception as e:
-                logger.exception( repr( e ) )
 
     def next_page( self, response ):
 
@@ -125,7 +126,7 @@ class AmazonSpider(scrapy.Spider):
 
         review = f_xpath( response, '//table[@id="productReviews"]/tr/td' )
         if review is None:
-            yield scrapy.http.Request( url = self.next_product_url(),
+            yield scrapy.http.Request( url = next_product_url(),
                                        callback = self.parse )
 
         rids = xpath_extract( review, './a/@name' )
@@ -180,7 +181,7 @@ class AmazonSpider(scrapy.Spider):
             yield d
 
         next_url = self.next_page( response ) or \
-                self.next_product_url()
+                        next_product_url()
 
         # see http://doc.scrapy.org/en/latest/topics/request-response.html
         yield scrapy.http.Request( url = next_url, callback = self.parse,
