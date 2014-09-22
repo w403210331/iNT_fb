@@ -66,6 +66,27 @@ def _dict_product( product ):
             reviews = product.reviews,
             list_price = product.list_price, )
 
+def time_delay( t ):
+
+    minute = 60
+    hour = minute * 60
+    day = hour * 24
+
+    t = time.time() - t
+    t = int( t )
+
+    s = ''
+    if t >= day:
+        s += str( t / day ) + 'D/'
+        t = t % day
+    if t >= hour:
+        s += str( t/ hour ) + 'H/'
+        t = t % hour
+    if t >= minute:
+        s += str( t/ minute ) + 'M'
+
+    return s
+
 @safe
 def get_product( product_id ):
 
@@ -81,6 +102,13 @@ def get_product( product_id ):
     cli = get_cli()
     k = conf.KEY_REVIEW.format( p = product.asin )
     d[ 'crawl' ] = True if cli.exists( k ) else False
+
+    k = conf.KEY_PRODUCT_TASK.format( p = product.asin )
+    if cli.exists( k ):
+        r = cli.get( k )
+        d[ 'delay' ] = time_delay( json.loads( r )[ 'ctime' ] )
+    else:
+        d[ 'delay' ] = None
 
     if d[ 'reviews' ] and d[ 'reviews' ][ 0 ]:
         d[ 'reviews' ] = d[ 'reviews' ][ 1 ]
@@ -107,6 +135,13 @@ def get_search_products( Keywords, SearchIndex, num = 10, **argkv ):
 
         k = conf.KEY_REVIEW.format( p = product.asin )
         d[ 'crawl' ] = True if cli.exists( k ) else False
+
+        k = conf.KEY_PRODUCT_TASK.format( p = product.asin )
+        if cli.exists( k ):
+            r = cli.get( k )
+            d[ 'delay' ] = time_delay( json.loads( r )[ 'ctime' ] )
+        else:
+            d[ 'delay' ] = None
 
         if d[ 'reviews' ] and d[ 'reviews' ][ 0 ]:
             d[ 'reviews' ] = d[ 'reviews' ][ 1 ]

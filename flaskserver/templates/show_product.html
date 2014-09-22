@@ -32,6 +32,9 @@ $(function(){
             {% if p.crawl %}
               <a href="{{ url_for( 'show_reviews', product_id=p.asin, page=1 ) }}"> See Crawl Reviews </a>
             {% endif %}
+            {% if p.delay %}
+              Data Delay : {{p.delay}}
+            {% endif %}
           </span>
         </div>
         <div>
