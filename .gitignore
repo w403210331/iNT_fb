@@ -4,3 +4,4 @@
 *.log
 
 flaskserver/logs/
+scrapyserver/amazon/logs/
