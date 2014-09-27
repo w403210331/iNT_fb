@@ -48,6 +48,31 @@ def add_ignore_word( word ):
     with open( conf.IGNORE_FILE, 'a' ) as f:
         f.write( word + '\n' )
 
+def _product_nodes( product ):
+
+    nodes = []
+
+    for br in product.browse_nodes:
+        nd = []
+        if br.name is None:
+            continue
+        nd.append( str( br.name ) )
+
+        anc = br.ancestor
+        while True:
+            if anc is None:
+                break
+
+            if anc.name is not None:
+                nd.append( str( anc.name ) )
+
+            anc = anc.ancestor
+
+        nd.reverse()
+        nodes.append( ' -> '.join( nd ) )
+
+    return nodes
+
 def _dict_product( product ):
 
     return dict(
@@ -68,7 +93,9 @@ def _dict_product( product ):
             medium_image_url = product.medium_image_url,
             small_image_url = product.small_image_url,
             reviews = product.reviews,
-            list_price = product.list_price, )
+            list_price = product.list_price,
+
+            nodes = _product_nodes( product ), )
 
 def time_delay( t ):
 
@@ -98,7 +125,8 @@ def get_product( product_id ):
 
     handle = AmazonAPI( conf.aws_key,
                         conf.aws_secret,
-                        conf.aws_associate_tag, )
+                        conf.aws_associate_tag,
+                        Version = "2013-08-01", )
     product = handle.lookup( ItemId = product_id )
 
     d = _dict_product( product )
@@ -126,7 +154,8 @@ def get_search_products( Keywords, SearchIndex, num = 10, **argkv ):
 
     handle = AmazonAPI( conf.aws_key,
                         conf.aws_secret,
-                        conf.aws_associate_tag, )
+                        conf.aws_associate_tag,
+                        Version = "2013-08-01", )
 
     products = handle.search( Keywords = Keywords,
                               SearchIndex = SearchIndex, **argkv )
@@ -395,12 +424,12 @@ def search_product( keywords = None, search_index = 'All', num = 10 ):
         error = 'Invalid Number: ' + str( num )
 
     if error:
-        return render_template( 'search_product.html',
+        return render_template( 'show_product.html',
                                 error = error, products = [] )
 
     prds = get_search_products( keywords, search_index, num ) or []
 
-    return render_template( 'search_product.html',
+    return render_template( 'show_product.html',
                             error = error, products = prds )
 
 def render_show_reviews( **argkv ):

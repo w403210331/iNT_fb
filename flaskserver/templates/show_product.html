@@ -59,6 +59,11 @@ $(function(){
         <div>
           Brand: {{ p.brand }}
         </div>
+        {% for node in p.nodes %}
+          <div>
+            Node: {{ node }}
+          </div>
+        {% endfor %}
         <div>
           <img src="{{ p.large_image_url }}" />
         <div>
