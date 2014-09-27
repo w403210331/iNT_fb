@@ -2,6 +2,8 @@
 import time
 import json
 import logging
+import StringIO
+import mimetypes
 
 import conf
 from rediscli import get_cli
@@ -9,7 +11,9 @@ from amazonapi import AmazonAPI
 import genlog
 logger = genlog.logger
 
-from flask import Flask, \
+import xlwt
+from werkzeug.datastructures import Headers
+from flask import Flask, Response, \
             request, abort, redirect, url_for, \
             render_template, session, flash
 
@@ -422,6 +426,76 @@ def show_reviews( product_id = None, page = 1 ):
     return render_show_reviews( reviews = rws, product_id = product_id, page = page,
                                 pages = pages, nums = nums )
 
+@app.route( '/export_reviews/<product_id>', methods = [ 'GET' ] )
+def export_reviews( product_id = None ):
+    error = None
+    if product_id is None:
+        error = 'Invalid ASIN: ' + str( product_id )
+
+    if error:
+        return render_show_reviews( error = error )
+
+    response = Response()
+    response.status_code = 200
+
+    workbook = xlwt.Workbook( encoding = 'utf-8' )
+
+    prdids = product_id.split( ',' )
+    for prdid in prdids:
+        sheet = workbook.add_sheet( prdid )
+
+        for k, sk, ix in conf.EXCEL_KEYS:
+            sheet.write( 0, ix, sk )
+
+        num = 1
+        iter = yield_review( prdid ) or []
+        for rw in iter:
+            for k, sk, ix in conf.EXCEL_KEYS:
+                try:
+                    v = rw[ k ] or ''
+                    if type( v ) in conf.LISTTYPE:
+                        fmt = ','.join( [ '%s' ] * len( v ) )
+                        v = fmt % tuple( v )
+                    elif type( v ) == type( u'' ):
+                        v = v.encode( 'utf-8' )
+                except Exception, e:
+                    logger.debug( repr( e ) )
+                    v = ''
+
+                sheet.write( num, ix, v )
+
+            num += 1
+
+    filename = product_id + '.xls'
+    output = StringIO.StringIO()
+    workbook.save( output )
+    response.data = output.getvalue()
+
+    mimetype_tuple = mimetypes.guess_type( filename )
+
+    #HTTP headers for forcing file download
+    response_headers = Headers( {
+                    'Pragma': "public",
+                    'Expires': '0',
+                    'Cache-Control': 'must-revalidate, post-check=0, pre-check=0',
+                    'Cache-Control': 'private',
+                    'Content-Type': mimetype_tuple[ 0 ] or 'application/vnd.ms-excel',
+                    'Content-Disposition': 'attachment; filename=\"%s\";' % filename,
+                    'Content-Transfer-Encoding': 'binary',
+                    'Content-Length': len( response.data ), } )
+
+    if not mimetype_tuple[ 1 ] is None:
+        response.update( { 'Content-Encoding': mimetype_tuple[ 1 ] } )
+
+    response.headers = response_headers
+
+    #as per jquery.fileDownload.js requirements
+    response.set_cookie( 'fileDownload', 'true', path = '/' )
+
+    logger.info( 'download %s, %d items' % ( filename, num - 1 ) )
+
+    return response
+
 @app.route( '/show_reviews_has_keyword/<product_id>/<keywords>', methods = [ 'GET' ] )
 def show_reviews_has_keyword( product_id = None, keywords = None ):
     error = None
@@ -495,8 +569,9 @@ def _run():
 
     #app.debug = True
     app.run( host = conf.HOST, port = conf.PORT,
-             #threaded = True,
-             processes = conf.PROCESS_NUM )
+             threaded = True,
+             #processes = conf.PROCESS_NUM,
+             )
 
 def run():
     while True:
@@ -512,3 +587,4 @@ if __name__ == '__main__':
 
     import daemonize
     daemonize.standard_daemonize( run, conf.PIDFILE )
+

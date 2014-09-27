@@ -9,6 +9,8 @@ HOST = '127.0.0.1'
 PORT = 7001
 PROCESS_NUM = 16
 
+LISTTYPE = ( type(()), type([]) )
+
 #configure
 URL_FOR_PASS = 'http://218.30.108.79:7000'
 PAGE_ITEMS = 10
@@ -21,6 +23,16 @@ ARGS_SHOW_REVIEW = ( ( 'error', None ),
                      ( 'pages', None ),
                      ( 'nums', None ), )
 
+EXCEL_KEYS = ( ( 'prdid', 'ASIN', 0  ),
+               ( 'rid', 'Review ID', 1 ),
+               ( 'reviewer', 'Reviewer', 2 ),
+               ( 'date', 'Date', 3 ),
+               ( 'num_help_review', 'Help Review Number', 4 ),
+               ( 'star', 'star', 5 ),
+               ( 'rfrom', 'Review From', 6 ),
+               ( 'reviewer_from', 'Reviewer From', 7 ),
+               ( 'help_text', 'Help Text', 8 ),
+               ( 'text', 'Text', 9 ), )
 
 SECRET_KEY = 'slasher'
 
