@@ -38,7 +38,7 @@ class FindnsaveStoresSpider(scrapy.Spider):
 
             href = fx_extract( sto, './@href' )
             name = fx_extract( sto, './@title' )
-            name = self.parse_srore_name( name )
+            name = self.parse_store_name( name )
 
             try:
                 _s, nid, id = href.strip( '/' ).split( '/' )
@@ -67,7 +67,7 @@ class FindnsaveStoresSpider(scrapy.Spider):
         return self.rooturl + uri
 
     @safe
-    def parse_srore_name( self, name ):
+    def parse_store_name( self, name ):
         if len( name ) > len( 'Shop All ' ) + len( ' Sales' ):
             name = name[ len( 'Shop All ' ):-len( ' Sales' ) ]
 
