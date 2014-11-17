@@ -55,5 +55,13 @@ class FindnsaveBrandsSpider(scrapy.Spider):
                                    dont_filter = True )
 
     def brand_next_page( self, response ):
-        return None
+        nexturl = f_xpath( response, '//div[@class="pagination"]/span[@class="next"]' )
+        if nexturl is None:
+            return None
+
+        uri = fx_extract( nexturl, './a[contains(text(), "Next")]/@href' )
+        if not uri:
+            return None
+
+        return self.rooturl + uri
 
