@@ -91,10 +91,10 @@ class AmazonSpider(scrapy.Spider):
 
     url_prev = 'http://www.amazon.com/ss/customer-reviews/'
 
-    #start_urls = [
-    #        "http://www.amazon.com/ss/customer-reviews/B00IQ8MWBS",
-    #        ]
-    start_urls = [ next_product_url() ]
+    start_urls = [
+            "http://www.amazon.com/ss/customer-reviews/B00IQ8MWBS",
+            ]
+    #start_urls = [ next_product_url() ]
 
     def empty_item( self ):
 
@@ -117,8 +117,7 @@ class AmazonSpider(scrapy.Spider):
         return fx_extract( nexturl, './a[contains(text(), "Next")]/@href' )
 
     def parse(self, response):
-
-        #with open( '/tmp/xxx', 'w' ) as f:
+        #with open( '/tmp/amazon.html', 'w' ) as f:
         #    f.write( response.body )
 
         logger.info( 'fetch : ' + response.url )

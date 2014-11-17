@@ -21,7 +21,7 @@ NEWSPIDER_MODULE = 'amazon.spiders'
 # log
 APP_LOG_DIR = '/usr/home/shenjie1/amazonapi/scrapyserver/amazon/logs/'
 APP_LOG_NAME = 'amazon'
-LOG_FILE = APP_LOG_DIR + 'amazon.log'
+LOG_FILE = APP_LOG_DIR + 'scrapy.log'
 LOG_LEVEL = 'DEBUG'
 LOG_ENABLED = True
 LOG_ENCODING = 'utf-8'
