@@ -11,43 +11,42 @@ from amazon.utils.util import first_item, safe, \
                               xpath, f_xpath, first_item_xpath, \
                               xpath_extract, fx_extract, first_item_xpath_extract
 
-logger = genlog.createlogger( 'findnsave_stores' )
+logger = genlog.createlogger( 'findnsave_brands' )
 
-class FindnsaveStoresSpider(scrapy.Spider):
+class FindnsaveBrandsSpider(scrapy.Spider):
 
-    name = 'findnsavestores'
+    name = 'findnsavebrands'
     allowed_domains = ( "findnsave.com", )
     location = 'newyork'
     rooturl = "http://%s.findnsave.com" % location
 
-    start_urls = [ rooturl + "/stores/" ]
+    start_urls = [ rooturl + "/brands/" ]
 
     def parse(self, response):
-        #with open( '/tmp/findnsave_stores.html', 'w' ) as f:
+        #with open( '/tmp/findnsave_brands.html', 'w' ) as f:
         #    f.write( response.body )
 
         logger.info( 'fetch : ' + response.url )
-        stores = f_xpath( response, '//ul[contains(@class, "listing") ' + \
-                                    ' and contains(@class, "grouping")' + \
-                                    ' and contains(@class, "infinite")]' ).xpath( './li' )
+        brands = f_xpath( response, '//ul[contains(@class, "brands") ' + \
+                                    ' and contains(@class, "columnize")' + \
+                                    ' and contains(@class, "clearfix")]' ).xpath( './li' )
 
-        for st in stores:
-            sto = f_xpath( st, './/div[@class="chiclet-actions"]/a' )
-            if not sto:
+        for br in brands:
+            br = f_xpath( br, './a' )
+            if not br:
                 continue
 
-            href = fx_extract( sto, './@href' )
-            name = fx_extract( sto, './@title' )
-            name = self.parse_store_name( name )
+            href = fx_extract( br, './@href' )
+            name = fx_extract( br, './text()' )
 
             try:
-                _s, nid, id = href.strip( '/' ).split( '/' )
+                _b, nid, id = href.strip( '/' ).split( '/' )
             except:
                 continue
 
             print href, nid, id, repr(name)
 
-        next_url = self.store_next_page( response )
+        next_url = self.brand_next_page( response )
         print next_url
         if next_url is None:
             return
@@ -55,7 +54,7 @@ class FindnsaveStoresSpider(scrapy.Spider):
         yield scrapy.http.Request( url = next_url, callback = self.parse,
                                    dont_filter = True )
 
-    def store_next_page( self, response ):
+    def brand_next_page( self, response ):
         nexturl = f_xpath( response, '//div[@class="pagination"]/span[@class="next"]' )
         if nexturl is None:
             return None
@@ -66,9 +65,3 @@ class FindnsaveStoresSpider(scrapy.Spider):
 
         return self.rooturl + uri
 
-    @safe
-    def parse_store_name( self, name ):
-        if len( name ) > len( 'Shop All ' ) + len( ' Sales' ):
-            name = name[ len( 'Shop All ' ):-len( ' Sales' ) ]
-
-        return name
