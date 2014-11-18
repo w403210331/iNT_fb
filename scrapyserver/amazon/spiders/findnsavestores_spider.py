@@ -21,7 +21,7 @@ class FindnsaveStoresSpider(scrapy.Spider):
     location = 'newyork'
     rooturl = "http://%s.findnsave.com" % location
 
-    start_urls = [ rooturl + "/stores/" ]
+    start_urls = [ rooturl + "/stores/?sort=top" ]
 
     csv_fd = open( '/tmp/stores.csv', 'w' )
 
