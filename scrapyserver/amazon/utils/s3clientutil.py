@@ -2,6 +2,15 @@ import httplib
 
 import s3client
 
+def authedclient():
+
+    h = client( 'earthpics',
+                'SINA0000001001K26C1N',
+                '06bc6c92b37c83befcffd1161712aa2a815855fd' )
+    h.need_auth = True
+
+    return h
+
 def client( project, accesskey, secretkey ):
 
     return s3client.S3( accesskey, secretkey, project )
