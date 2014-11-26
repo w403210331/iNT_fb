@@ -1,6 +1,6 @@
 import httplib
 
-import s3client
+import s3client as s3
 
 def authedclient():
 
@@ -13,7 +13,7 @@ def authedclient():
 
 def client( project, accesskey, secretkey ):
 
-    return s3client.S3( accesskey, secretkey, project )
+    return s3.S3( accesskey, secretkey, project )
 
 def get_http_resp_get_file( s3client, key, query = None, headers = None ):
 
@@ -22,7 +22,7 @@ def get_http_resp_get_file( s3client, key, query = None, headers = None ):
     resp = s3client._requst( verb, uri, headers or {} )
 
     if resp.status != httplib.OK:
-        raise s3client.S3HTTPCodeError, s3client._resp_format( resp )
+        raise s3.S3HTTPCodeError, s3client._resp_format( resp )
 
     return resp
 
@@ -54,7 +54,7 @@ def put_file_from_socket( s3client, key, httpresp, query = None, headers = None 
     conn = get_http_conn_put_file( s3client, key, query, send_headers )
 
     while True:
-        data = httpresp.read( s3client.S3.CHUNK )
+        data = httpresp.read( s3.S3.CHUNK )
         if data == '':
             break
         conn.send( data )
@@ -62,7 +62,7 @@ def put_file_from_socket( s3client, key, httpresp, query = None, headers = None 
     resp = conn.getresponse()
 
     if resp.status != httplib.OK:
-        raise s3client.S3HTTPCodeError, s3client._resp_format( resp )
+        raise s3.S3HTTPCodeError, s3client._resp_format( resp )
 
     return s3client._resp_format( resp )
 
