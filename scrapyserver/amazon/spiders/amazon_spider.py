@@ -13,7 +13,6 @@ from amazon.utils.util import first_item, safe, \
 
 @safe
 def get_product_task( prdid ):
-
     cli = get_cli()
     d = cli.get( KEY_PRODUCT_TASK.format( p = prdid ) )
     if d is None:
@@ -27,7 +26,6 @@ def get_product_task( prdid ):
 
 @safe
 def set_product_task( prdid ):
-
     task = { 'prdid' : prdid,
              'ctime' : time.time() }
     task_k = KEY_PRODUCT_TASK.format( p = prdid )
@@ -37,7 +35,6 @@ def set_product_task( prdid ):
 
 @safe
 def del_product_reviews( prdid ):
-
     k = KEY_REVIEW.format( p = prdid )
 
     cli = get_cli()
@@ -45,7 +42,6 @@ def del_product_reviews( prdid ):
         cli.delete( k )
 
 def product_is_timeout( prdid ):
-
     task = get_product_task( prdid )
     if task is None:
         return True
@@ -56,10 +52,9 @@ def product_is_timeout( prdid ):
     return False
 
 def next_product_url():
-
     cli = get_cli()
-    while True:
 
+    while True:
         product = cli.lpop( KEY_PRODUCTS )
         if product is None:
             logger.info( 'no product in queue ...' )
