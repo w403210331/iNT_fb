@@ -5,4 +5,13 @@
 # See documentation in:
 # http://doc.scrapy.org/en/latest/topics/items.html
 
-import scrapy
+from scrapy import Item, Field
+
+
+class FindnsaveAreaItem( Item ):
+
+    area  = Field()
+    short = Field()
+    state = Field()
+    url   = Field()
+

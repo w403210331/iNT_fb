@@ -3,7 +3,7 @@ import time
 import json
 
 import scrapy
-from amazon.items import AmazonReviewItem
+from amazon.item.amazon import AmazonReviewItem
 from amazon.utils.genlog import logger
 from amazon.utils.rediscli import get_cli, RedisLock, RedisLockError
 from amazon.settings import KEY_PRODUCTS, KEY_REVIEW, KEY_PRODUCT_TASK, CRAWL_PRODUCT_TIMEOUT
@@ -80,6 +80,8 @@ def next_product_url():
             logger.exception( repr( e ) )
 
 class AmazonSpider(scrapy.Spider):
+
+    logger = logger
 
     name = 'amazon'
     allowed_domains = ( "www.amazon.com", )

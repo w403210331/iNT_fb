@@ -27,7 +27,7 @@ LOG_ENABLED = True
 LOG_ENCODING = 'utf-8'
 
 # pipelines
-ITEM_PIPELINES = { 'amazon.pipelines.AmazonReviewPipeline' : 100 }
+ITEM_PIPELINES = { 'amazon.pipelines.AllPipeline' : 100 }
 
 # redis
 REDIS_IP   = '172.16.108.79'
