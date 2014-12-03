@@ -1,6 +1,11 @@
+import re
 import types
 import pymysql
 import datetime
+
+ESCAPE_REGEX = re.compile(r"[\0\n\r\032\'\"\\]")
+ESCAPE_MAP = {'\0': '\\0', '\n': '\\n', '\r': '\\r', '\032': '\\Z',
+              '\'': '\\\'', '"': '\\"', '\\': '\\\\'}
 
 class EasySqlLiteException( Exception ):
     pass
@@ -16,6 +21,13 @@ def formattable( tb ):
 
     return tb
 
+def escape_string(value, charset=None):
+    r = ("'%s'" % ESCAPE_REGEX.sub(
+        lambda match: ESCAPE_MAP.get(match.group(0)), value))
+    if not charset is None:
+        r = r.encode(charset)
+    return r
+
 def formatvalue( v ):
     if v is None :
         return 'NULL'
@@ -26,7 +38,7 @@ def formatvalue( v ):
     if type( v ) == datetime.datetime :
         return  v.strftime( "'%Y-%m-%d %H:%M:%S'" )
 
-    return pymysql.escape_string( str( v ) )
+    return escape_string( str( v ) )
 
 def formatcond( k, v ):
     if v is None :

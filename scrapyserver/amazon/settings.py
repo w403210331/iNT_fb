@@ -45,3 +45,8 @@ WEBSERVICE_LOGFILE = APP_LOG_DIR + 'access.log'
 WEBSERVICE_PORT    = 6080
 WEBSERVICE_HOST    = '172.16.108.79'
 
+dbconf = { 'host' : '172.16.108.79',
+           'port' : 3306,
+           'user' : 'amazon',
+           'passwd' : 'A2a596d6',
+           'db' : 'Amazon', }

@@ -11,6 +11,7 @@ from amazon.utils.util import first_item, safe, \
                               xpath_extract, fx_extract, first_item_xpath_extract
 
 logger = genlog.createlogger( 'findnsave_location' )
+genlog.logger = logger
 
 class FindnsaveLocationSpider(scrapy.Spider):
 

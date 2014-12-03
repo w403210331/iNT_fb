@@ -14,7 +14,8 @@ import scrapy
 from amazon.utils.util import safe
 from amazon.utils.genlog import logger
 from amazon.utils.rediscli import get_cli, RedisLock, RedisLockError
-from amazon.settings import KEY_REVIEW
+from amazon.settings import KEY_REVIEW, dbconf
+from amazon.utils import easysqllite as esql
 
 from amazon.item.amazon import AmazonReviewItem, AmazonProductItem
 from amazon.item.findnsave import FindnsaveAreaItem
@@ -28,9 +29,9 @@ class AllPipeline(object):
     def process_item(self, item, spider):
 
         if isinstance(item, AmazonReviewItem):
-            self.process_item_amazon_review(item, spider)
+            return self.process_item_amazon_review(item, spider)
         elif isinstance(item, FindnsaveAreaItem):
-            self.process_item_findnsave_area(item, spider)
+            return self.process_item_findnsave_area(item, spider)
 
         else:
             return item
@@ -50,9 +51,20 @@ class AllPipeline(object):
 
     def process_item_findnsave_area(self, item, spider):
 
-        pp( dict( item ) )
+        db = esql.Database( dbconf )
 
-        spider.logger.debug( repr( dict( item ) ) )
+        sql = "select `areaid`, `area`, `short`, `state`, `url` from `findnsave_area`" + \
+                " where `area` = '%s' and `state` = '%s'" %  ( item['area'], item['state'] )
+        data = db.conn.read( sql )
 
+        if not data:
+            db.__getattr__( 'findnsave_area' ).puts( [ dict(item) ] )
+            spider.logger.info('insert : ' + repr(dict(item)))
+        else:
+            if data[0]['url'] != item['url']:
+                sql = "update `findnsave_area` set `url`='%s' where `areaid`=%s limit 1" % \
+                        ( item['url'], data[0]['areaid'] )
+                db.conn.write( sql )
+                spider.logger.info('update : from %s to %s' % ( repr(data[0]), repr(dict(item)) ) )
 
 
