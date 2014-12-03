@@ -1,4 +1,5 @@
 
+import csv
 import time
 import json
 
@@ -21,6 +22,9 @@ class FindnsaveCategoriesSpider(scrapy.Spider):
     rooturl = "http://%s.findnsave.com" % location
 
     start_urls = [ rooturl + "/categories/" ]
+
+    csv_fd = open( '/tmp/categories.csv', 'w' )
+    csv.writer( csv_fd ).writerow( [ 'id', 'cid', 'name', 'href' ] )
 
     def parse(self, response):
         #with open( '/tmp/findnsave_categories.html', 'w' ) as f:
@@ -46,6 +50,7 @@ class FindnsaveCategoriesSpider(scrapy.Spider):
                 continue
 
             print href, nid, id, repr(name)
+            csv.writer( self.csv_fd ).writerow( [ id, nid, name, href ] )
 
         next_url = self.categorie_next_page( response )
         print next_url
