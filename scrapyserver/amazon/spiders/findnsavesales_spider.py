@@ -28,69 +28,98 @@ class FindnsaveStoresSpider(scrapy.Spider):
 
     jsonfile = open( '/tmp/sales.json', 'a' )
 
-    @safe
-    def parse_one_sale(self, response):
-        #with open( '/tmp/findnsave_sales_one.html', 'w' ) as f:
-        #    f.write( response.body )
-
+    def _parse_date(self, response):
         date = f_xpath( response, '//div[contains(@class, "offer-pdp-hd") ' + \
                                    ' and contains(@class, "clearfix")]' )
-
-        right = ''
+        starts = ''
         expiration = ''
-        if date:
-            right = f_xpath( date, './/div[@class="offer-right"]' )
-            right = fx_extract( right, './h2/text()' ) or ''
+        if not date:
+            return starts, expiration
 
-            exp = f_xpath( date, './/div[contains(@class, "expiration") ' + \
-                                   ' and contains(@class, "with-date") ]' )
-            if exp:
-                expiration = fx_extract( exp, './div/text()' )
+        st = f_xpath( date, './/div[@class="offer-right"]' )
+        if st:
+            starts = fx_extract( st, './h2/text()' ) or ''
 
-        sale = f_xpath( response, '//div[contains(@class, "offer-description-wrapper") ' + \
-                                   ' and contains(@class, "clearfix")]' )
-        if not sale:
-            return
+        exp = f_xpath( date, './/div[contains(@class, "expiration") ' + \
+                               ' and contains(@class, "with-date") ]' )
+        if exp:
+            expiration = fx_extract( exp, './div/text()' ) or ''
+        return starts, expiration
 
-        #lg_img
-        lg_img = fx_extract( sale, './div[@class="offer-left"]/div[contains(@class, "large")]' + \
-                                   '/img/@src' ) or ''
+    def _parse_callout(self, p):
+        callout = f_xpath( p, './div[@class="callout"]' )
 
-        sr = f_xpath( sale, './div[@class="offer-right"]' )
+        pct_off = ''
+        if callout:
+            pct = fx_extract( callout, './span[@class="pct"]/text()' ) or ''
+            off = fx_extract( callout, './span[@class="off"]/text()' ) or ''
+            pct_off = (pct + ' ' + off).strip()
 
-        #name
-        name = fx_extract( sr, './h1[@itemprop="name"]/text()' )
-        if name is None:
-            return
+        return pct_off
 
-        #price
-        price = f_xpath( sr, './div[@class="product-price"]' )
+    def _parse_large_img(self, p):
+        return fx_extract( p, './div[@class="offer-left"]' + \
+                              '/div[contains(@class, "large")]' + \
+                              '/img/@src' ) or ''
+
+    def _parse_price(self, p):
+        price = f_xpath( p, './div[@class="product-price"]' )
         p_c = fx_extract( price, './/span[@itemprop="priceCurrency"]/@content' ) or ''
-        p_p = fx_extract( price, './/span[@itemprop="price"]/@content' ) or '-1'
-        p_r = fx_extract( price, './/span[@itemprop="regular-price"]/text()' ) or ''
+        p_p = fx_extract( price, './/span[@class="price"]/@content' ) or '-1'
+        p_r = fx_extract( price, './/span[@class="regular-price"]/text()' ) or ''
         p_u = fx_extract( price, './/span[@itemprop="priceValidUntil"]/@content' ) or ''
         try:
             float( p_p )
         except Exception:
             p_p = '-1'
 
-        #desc
-        desc = f_xpath( sr, './div[@class="offer-descriptions"]' )
-        desc = '|'.join( xpath_extract( desc, './/div[@class="offer-description"]/text()' ) ).strip()
+        if p_c == 'USD':
+            if '$' in p_r:
+                p_r = p_r.split('$')[1].split()[0]
 
-        #retailer
-        retailer = fx_extract( sr, './p[@class="retailer"]/a/text()' ) or ''
-        retailer = retailer.strip()
-        #category
-        category = fx_extract( sr, './p[@class="parentCategory"]/a/text()' ) or ''
-        category = category.strip()
-        #brand
-        brand = fx_extract( sr, './p[@class="brand"]/a/text()' ) or ''
-        brand = brand.strip()
+        return p_c, p_p, p_r, p_u
+
+    def _parse_desc(self, p):
+        desc = f_xpath( p, './div[@class="offer-descriptions"]' )
+        desc = ' '.join( [ x.strip() for x in \
+                    xpath_extract( desc, './/div[@class="offer-description"]/text()' ) ] )
+
+        return desc
+
+    def _parse_retailer_category_brand(self, p):
+        retailer = (fx_extract( p, './p[@class="retailer"]/a/text()' ) or '').strip()
+        category = (fx_extract( p, './p[@class="parentCategory"]/a/text()' ) or '').strip()
+        brand    = (fx_extract( p, './p[@class="brand"]/a/text()' ) or '').strip()
+
+        return retailer, category, brand
+
+    @safe
+    def parse_one_sale(self, response):
+        #with open( '/tmp/findnsave_sales_one.html', 'w' ) as f:
+        #    f.write( response.body )
+
+        sale = f_xpath( response, '//div[contains(@class, "offer-description-wrapper") ' + \
+                                   ' and contains(@class, "clearfix")]' )
+        if not sale:
+            return
+
+        starts, expiration = self._parse_date( response )
+        pct_off = self._parse_callout( sale )
+        lg_img = self._parse_large_img( sale )
+
+        sr = f_xpath( sale, './div[@class="offer-right"]' )
+        name = fx_extract( sr, './h1[@itemprop="name"]/text()' )
+        if name is None:
+            logger.debug( 'not crawl name in : ' + response.url )
+            return
+
+        p_c, p_p, p_r, p_u = self._parse_price( sr )
+        desc = self._parse_desc( sr )
+        retailer, category, brand = self._parse_retailer_category_brand( sr )
 
         data = [ response.meta[ 'id' ], name,
-                    p_p, p_c, p_r, p_u,
-                    right, expiration,
+                    p_c, p_p, p_r, p_u, pct_off,
+                    starts, expiration,
                     retailer, category, brand,
                     response.url, response.meta[ 'th_img' ], lg_img,
                     desc, ]
