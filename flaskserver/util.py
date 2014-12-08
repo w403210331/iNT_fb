@@ -38,3 +38,7 @@ def open_lock_file( filename, block = False, returnPID = False ):
 def read_file( fn ):
     with open( fn, 'r' ) as f:
         return f.read()
+
+escape = lambda v : v.encode('utf8') if type(v) == type(u'') else v
+unescape = lambda v : v.decode('utf8') if type(v) == type('') else v
+

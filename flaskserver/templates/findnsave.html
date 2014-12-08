@@ -1,0 +1,28 @@
+{% extends "header.html" %}
+{% block body %}
+<script language=Javascript>
+function change(p){
+if (p == 200){
+	//document.sel.submit();
+	;
+}
+return true;
+}
+</script>
+	<h2>Findnsave</h2>
+		{% if error %}<p class="error"><strong>Error:</strong> {{ error }}{% endif %}
+<TABLE WIDTH="100%" CELLPADDING=0 CELLSPACING=0 BORDER=0>
+	<TR><TD ALIGN=left VALIGN=top><FONT SIZE="8">
+		<a href='/findnsave/area/'>show all Area</a></TD></TR>
+	<TR><TD ALIGN=left VALIGN=top><FONT SIZE="8">
+		<a href='/findnsave/brand/'>show all Brand</a></TD></TR>
+	<TR><TD ALIGN=left VALIGN=top><FONT SIZE="8">
+		<a href='/findnsave/category/'>show all Category</a></TD></TR>
+	<TR><TD ALIGN=left VALIGN=top><FONT SIZE="8">
+		<a href='/findnsave/store/'>show all Store</a></TD></TR>
+	<TR><TD ALIGN=left VALIGN=top><FONT SIZE="8">
+		 ----- -_-! ----- </TD></TR>
+	<TR><TD ALIGN=left VALIGN=top><FONT SIZE="8">
+		<a href='/findnsave/sale/'>Sales</a></TD></TR>
+</TABLE>
+{% endblock %}

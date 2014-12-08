@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 import time
 import json
 import logging
@@ -8,6 +8,7 @@ import mimetypes
 import conf
 from rediscli import get_cli
 from amazonapi import AmazonAPI
+from util import escape, unescape
 import genlog
 logger = genlog.logger
 
@@ -16,6 +17,8 @@ from werkzeug.datastructures import Headers
 from flask import Flask, Response, \
             request, abort, redirect, url_for, \
             render_template, session, flash
+
+import easysqllite as esql
 
 PAGE_ITEMS = conf.PAGE_ITEMS
 
@@ -356,10 +359,6 @@ def root():
 def amazonserver():
     return redirect( url_for_pass( 'search' ) )
 
-@app.route( '/findnsave/' )
-def findnsaveserver():
-    return redirect( url_for_pass( 'findnsave' ) )
-
 @app.route( '/add/<product_id>', methods = [ 'GET', 'POST' ] )
 def add( product_id = None ):
 
@@ -594,6 +593,75 @@ def order_words( product_id = None, num = 1 ):
     return render_template( 'show_review_words.html',
                             error = error, words = kvs,
                             product_id = product_id )
+
+@app.route( '/findnsave/' )
+def findnsaveserver():
+    return render_template( 'findnsave.html' )
+
+def _get_findnsave_data( table, cols ):
+    error = None
+
+    sql = "select %s from `%s`" % ( ', '.join( [ '`%s`' % c for c in cols ] ), table )
+    logger.info( sql )
+    try:
+        db = esql.Database( conf.dbconf )
+        data = db.conn.read( sql )
+    except Exception as e :
+        logger.exception( repr(e) )
+        error = repr(e)
+        data = []
+
+    for d in data:
+        for k in d:
+            d[ k ] = unescape( d[ k ] )
+
+    return error, data
+
+@app.route( '/findnsave/area/' )
+def findnsave_show_area():
+    table = 'findnsave_area'
+    cols = ( 'areaid', 'area', 'short', 'state', 'url' )
+    desc = ( 'ID', 'city name', 'short', 'state', 'url' )
+
+    error, data = _get_findnsave_data( table, cols )
+    return render_template( 'findnsave_show_.html',
+                            error = error, data = data, cols = cols, desc = desc )
+
+@app.route( '/findnsave/brand/' )
+def findnsave_show_brand():
+    table = 'findnsave_brand'
+    cols = ( 'id', 'name', 'nameid', 'uri' )
+    desc = ( 'ID', 'Brand name', 'name in URI', 'URI' )
+
+    error, data = _get_findnsave_data( table, cols )
+    return render_template( 'findnsave_show_.html',
+                            error = error, data = data, cols = cols, desc = desc )
+
+@app.route( '/findnsave/category/' )
+def findnsave_show_category():
+    table = 'findnsave_category'
+    cols = ( 'id', 'name', 'nameid', 'uri' )
+    desc = ( 'ID', 'Category name', 'name in URI', 'URI' )
+
+    error, data = _get_findnsave_data( table, cols )
+    return render_template( 'findnsave_show_.html',
+                            error = error, data = data, cols = cols, desc = desc )
+
+@app.route( '/findnsave/store/' )
+def findnsave_show_store():
+    table = 'findnsave_store'
+    cols = ( 'id', 'name', 'nameid', 'uri' )
+    desc = ( 'ID', 'Category name', 'name in URI', 'URI' )
+
+    error, data = _get_findnsave_data( table, cols )
+    return render_template( 'findnsave_show_.html',
+                            error = error, data = data, cols = cols, desc = desc )
+
+@app.route( '/findnsave/sale/' )
+def findnsave_sale():
+
+    return 'unfinished'
+
 
 def set_access_logger():
 

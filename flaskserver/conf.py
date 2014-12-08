@@ -49,3 +49,8 @@ ACCESS_LOG_NAME = APP_LOG_DIR + 'flask.access.log'
 
 IGNORE_FILE = '/usr/home/shenjie1/amazonapi/flaskserver/ignore.txt'
 
+dbconf = { 'host' : '172.16.108.79',
+           'port' : 3306,
+           'user' : 'amazon',
+           'passwd' : 'A2a596d6',
+           'db' : 'Amazon', }
