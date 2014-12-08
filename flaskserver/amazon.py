@@ -350,7 +350,15 @@ def ignore_word( word = None ):
 
 @app.route( '/' )
 def root():
+    return render_template( 'index.html' )
+
+@app.route( '/amazon/' )
+def amazonserver():
     return redirect( url_for_pass( 'search' ) )
+
+@app.route( '/findnsave/' )
+def findnsaveserver():
+    return redirect( url_for_pass( 'findnsave' ) )
 
 @app.route( '/add/<product_id>', methods = [ 'GET', 'POST' ] )
 def add( product_id = None ):
