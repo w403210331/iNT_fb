@@ -48,3 +48,10 @@ def safe_with_log( logger ):
         return wrapper
 
     return _safe
+
+def escape(v):
+
+    if type(v) == type(u''):
+        return v.encode('utf8')
+
+    return v

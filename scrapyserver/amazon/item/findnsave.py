@@ -9,21 +9,24 @@ from scrapy import Item, Field
 
 
 class FindnsaveAreaItem( Item ):
-
     area  = Field()
     short = Field()
     state = Field()
     url   = Field()
 
 class FindnsaveStoreItem( Item ):
-
     id = Field()
     name = Field()
     nameid = Field()
     uri = Field()
 
 class FindnsaveBrandItem( Item ):
+    id = Field()
+    name = Field()
+    nameid = Field()
+    uri = Field()
 
+class FindnsaveCategoryItem( Item ):
     id = Field()
     name = Field()
     nameid = Field()

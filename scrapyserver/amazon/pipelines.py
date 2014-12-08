@@ -11,7 +11,7 @@ pp = pprint.pprint
 import json
 
 import scrapy
-from amazon.utils.util import safe
+from amazon.utils.util import safe, safe_with_log
 from amazon.utils.genlog import logger
 from amazon.utils.rediscli import get_cli, RedisLock, RedisLockError
 from amazon.settings import KEY_REVIEW, dbconf
@@ -20,7 +20,8 @@ from amazon.utils import easysqllite as esql
 from amazon.item.amazon import AmazonReviewItem, AmazonProductItem
 from amazon.item.findnsave import FindnsaveAreaItem, \
                                   FindnsaveStoreItem, \
-                                  FindnsaveBrandItem
+                                  FindnsaveBrandItem, \
+                                  FindnsaveCategoryItem
 
 class AllPipeline(object):
 
@@ -33,11 +34,17 @@ class AllPipeline(object):
         if isinstance(item, AmazonReviewItem):
             return self.process_item_amazon_review(item, spider)
         elif isinstance(item, FindnsaveAreaItem):
-            return self.process_item_findnsave_area(item, spider)
+            return safe_with_log(spider.logger)(
+                        self.process_item_findnsave_area )(item, spider)
         elif isinstance(item, FindnsaveStoreItem):
-            return self.process_item_findnsave_store(item, spider)
+            return safe_with_log(spider.logger)(
+                        self.process_item_findnsave_store )(item, spider)
         elif isinstance(item, FindnsaveBrandItem):
-            return self.process_item_findnsave_brand(item, spider)
+            return safe_with_log(spider.logger)(
+                        self.process_item_findnsave_brand )(item, spider)
+        elif isinstance(item, FindnsaveCategoryItem):
+            return safe_with_log(spider.logger)(
+                        self.process_item_findnsave_category )(item, spider)
 
         else:
             return item
@@ -74,28 +81,17 @@ class AllPipeline(object):
                 spider.logger.info('update : from %s to %s' % ( repr(data[0]), repr(dict(item)) ) )
 
     def process_item_findnsave_store(self, item, spider):
-
-        db = esql.Database( dbconf )
-
-        sql = "select `id`, `name`, `nameid`, `uri` from `findnsave_store`" + \
-                " where `id` = '%s'" %  ( item['id'], )
-        data = db.conn.read( sql )
-
-        if not data:
-            db.__getattr__( 'findnsave_store' ).puts( [ dict(item) ] )
-            spider.logger.info('insert : ' + repr(dict(item)))
-        else:
-            if data[0]['name'] != item['name']:
-                sql = "update `findnsave_store` set `name`='%s' where `id`=%s limit 1" % \
-                        ( item['name'], data[0]['id'] )
-                db.conn.write( sql )
-                spider.logger.info('update : from %s to %s' % ( repr(data[0]), repr(dict(item)) ) )
+        self.process_item_findnsave_('findnsave_store', item, spider)
 
     def process_item_findnsave_brand(self, item, spider):
+        self.process_item_findnsave_('findnsave_brand', item, spider)
+
+    def process_item_findnsave_category(self, item, spider):
+        self.process_item_findnsave_('findnsave_category', item, spider)
+
+    def process_item_findnsave_( self, table, item, spider):
 
         db = esql.Database( dbconf )
-        table = 'findnsave_brand'
-
         sql = "select `id`, `name`, `nameid`, `uri` from `%s`" % table + \
                 " where `id` = '%s'" %  ( item['id'], )
         data = db.conn.read( sql )

@@ -4,6 +4,7 @@ import time
 import json
 
 import scrapy
+from amazon.utils.util import escape
 from amazon.utils import genlog
 from amazon.item.findnsave import FindnsaveBrandItem
 from amazon.utils.rediscli import get_cli, RedisLock, RedisLockError
@@ -52,7 +53,7 @@ class FindnsaveBrandsSpider(scrapy.Spider):
 
             d = FindnsaveBrandItem()
             d['id'] = id
-            d['name'] = name
+            d['name'] = escape(name)
             d['nameid'] = bid
             d['uri'] = href
 
