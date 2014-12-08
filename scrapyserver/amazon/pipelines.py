@@ -18,7 +18,8 @@ from amazon.settings import KEY_REVIEW, dbconf
 from amazon.utils import easysqllite as esql
 
 from amazon.item.amazon import AmazonReviewItem, AmazonProductItem
-from amazon.item.findnsave import FindnsaveAreaItem
+from amazon.item.findnsave import FindnsaveAreaItem, \
+                                  FindnsaveStoreItem
 
 class AllPipeline(object):
 
@@ -32,6 +33,8 @@ class AllPipeline(object):
             return self.process_item_amazon_review(item, spider)
         elif isinstance(item, FindnsaveAreaItem):
             return self.process_item_findnsave_area(item, spider)
+        elif isinstance(item, FindnsaveStoreItem):
+            return self.process_item_findnsave_store(item, spider)
 
         else:
             return item
@@ -67,4 +70,21 @@ class AllPipeline(object):
                 db.conn.write( sql )
                 spider.logger.info('update : from %s to %s' % ( repr(data[0]), repr(dict(item)) ) )
 
+    def process_item_findnsave_store(self, item, spider):
+
+        db = esql.Database( dbconf )
+
+        sql = "select `id`, `name`, `nameid`, `uri` from `findnsave_store`" + \
+                " where `id` = '%s'" %  ( item['id'], )
+        data = db.conn.read( sql )
+
+        if not data:
+            db.__getattr__( 'findnsave_store' ).puts( [ dict(item) ] )
+            spider.logger.info('insert : ' + repr(dict(item)))
+        else:
+            if data[0]['name'] != item['name']:
+                sql = "update `findnsave_store` set `name`='%s' where `id`=%s limit 1" % \
+                        ( item['name'], data[0]['id'] )
+                db.conn.write( sql )
+                spider.logger.info('update : from %s to %s' % ( repr(data[0]), repr(dict(item)) ) )
 

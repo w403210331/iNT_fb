@@ -4,17 +4,19 @@ import time
 import json
 
 import scrapy
-#from amazon.items import AmazonReviewItem
 from amazon.utils import genlog
+from amazon.item.findnsave import FindnsaveStoreItem
 from amazon.utils.rediscli import get_cli, RedisLock, RedisLockError
-#from amazon.settings import KEY_PRODUCTS, KEY_REVIEW, KEY_PRODUCT_TASK, CRAWL_PRODUCT_TIMEOUT
 from amazon.utils.util import first_item, safe, \
                               xpath, f_xpath, first_item_xpath, \
                               xpath_extract, fx_extract, first_item_xpath_extract
 
 logger = genlog.createlogger( 'findnsave_stores' )
+genlog.logger = logger
 
 class FindnsaveStoresSpider(scrapy.Spider):
+
+    logger = logger
 
     name = 'findnsavestores'
     allowed_domains = ( "findnsave.com", )
@@ -23,11 +25,9 @@ class FindnsaveStoresSpider(scrapy.Spider):
 
     start_urls = [ rooturl + "/stores/?sort=top" ]
 
-    csv_fd = open( '/tmp/stores.csv', 'w' )
+    #csv_fd = open( '/tmp/stores.csv', 'w' )
 
     def parse(self, response):
-        #with open( '/tmp/findnsave_stores.html', 'w' ) as f:
-        #    f.write( response.body )
 
         logger.info( 'fetch : ' + response.url )
         stores = f_xpath( response, '//ul[contains(@class, "listing") ' + \
@@ -44,12 +44,19 @@ class FindnsaveStoresSpider(scrapy.Spider):
             name = self.parse_store_name( name )
 
             try:
-                _s, nid, id = href.strip( '/' ).split( '/' )
+                _s, sid, id = href.strip( '/' ).split( '/' )
             except:
                 continue
 
-            print href, nid, id, repr(name)
-            csv.writer( self.csv_fd ).writerow( [ id, nid, name, href ] )
+            #csv.writer( self.csv_fd ).writerow( [ id, sid, name, href ] )
+
+            d = FindnsaveStoreItem()
+            d['id'] = id
+            d['name'] = name
+            d['nameid'] = sid
+            d['uri'] = href
+
+            yield d
 
         next_url = self.store_next_page( response )
         print next_url

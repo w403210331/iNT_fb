@@ -15,3 +15,11 @@ class FindnsaveAreaItem( Item ):
     state = Field()
     url   = Field()
 
+class FindnsaveStoreItem( Item ):
+
+    id = Field()
+    name = Field()
+    nameid = Field()
+    uri = Field()
+
+
