@@ -19,7 +19,8 @@ from amazon.utils import easysqllite as esql
 
 from amazon.item.amazon import AmazonReviewItem, AmazonProductItem
 from amazon.item.findnsave import FindnsaveAreaItem, \
-                                  FindnsaveStoreItem
+                                  FindnsaveStoreItem, \
+                                  FindnsaveBrandItem
 
 class AllPipeline(object):
 
@@ -35,6 +36,8 @@ class AllPipeline(object):
             return self.process_item_findnsave_area(item, spider)
         elif isinstance(item, FindnsaveStoreItem):
             return self.process_item_findnsave_store(item, spider)
+        elif isinstance(item, FindnsaveBrandItem):
+            return self.process_item_findnsave_brand(item, spider)
 
         else:
             return item
@@ -85,6 +88,25 @@ class AllPipeline(object):
             if data[0]['name'] != item['name']:
                 sql = "update `findnsave_store` set `name`='%s' where `id`=%s limit 1" % \
                         ( item['name'], data[0]['id'] )
+                db.conn.write( sql )
+                spider.logger.info('update : from %s to %s' % ( repr(data[0]), repr(dict(item)) ) )
+
+    def process_item_findnsave_brand(self, item, spider):
+
+        db = esql.Database( dbconf )
+        table = 'findnsave_brand'
+
+        sql = "select `id`, `name`, `nameid`, `uri` from `%s`" % table + \
+                " where `id` = '%s'" %  ( item['id'], )
+        data = db.conn.read( sql )
+
+        if not data:
+            db.__getattr__( table ).puts( [ dict(item) ] )
+            spider.logger.info('insert : ' + repr(dict(item)))
+        else:
+            if data[0]['name'] != item['name']:
+                sql = "update `%s` set `name`='%s' where `id`=%s limit 1" % \
+                        ( table, item['name'], data[0]['id'] )
                 db.conn.write( sql )
                 spider.logger.info('update : from %s to %s' % ( repr(data[0]), repr(dict(item)) ) )
 

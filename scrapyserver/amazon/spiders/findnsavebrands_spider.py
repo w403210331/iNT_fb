@@ -4,17 +4,19 @@ import time
 import json
 
 import scrapy
-#from amazon.items import AmazonReviewItem
 from amazon.utils import genlog
+from amazon.item.findnsave import FindnsaveBrandItem
 from amazon.utils.rediscli import get_cli, RedisLock, RedisLockError
-#from amazon.settings import KEY_PRODUCTS, KEY_REVIEW, KEY_PRODUCT_TASK, CRAWL_PRODUCT_TIMEOUT
 from amazon.utils.util import first_item, safe, \
                               xpath, f_xpath, first_item_xpath, \
                               xpath_extract, fx_extract, first_item_xpath_extract
 
 logger = genlog.createlogger( 'findnsave_brands' )
+genlog.logger = logger
 
 class FindnsaveBrandsSpider(scrapy.Spider):
+
+    logger = logger
 
     name = 'findnsavebrands'
     allowed_domains = ( "findnsave.com", )
@@ -23,12 +25,10 @@ class FindnsaveBrandsSpider(scrapy.Spider):
 
     start_urls = [ rooturl + "/brands/" ]
 
-    csv_fd = open( '/tmp/brands.csv', 'w' )
-    csv.writer( csv_fd ).writerow( [ 'id', 'cid', 'name', 'href' ] )
+    #csv_fd = open( '/tmp/brands.csv', 'w' )
+    #csv.writer( csv_fd ).writerow( [ 'id', 'cid', 'name', 'href' ] )
 
     def parse(self, response):
-        #with open( '/tmp/findnsave_brands.html', 'w' ) as f:
-        #    f.write( response.body )
 
         logger.info( 'fetch : ' + response.url )
         brands = f_xpath( response, '//ul[contains(@class, "brands") ' + \
@@ -44,15 +44,21 @@ class FindnsaveBrandsSpider(scrapy.Spider):
             name = fx_extract( br, './text()' )
 
             try:
-                _b, nid, id = href.strip( '/' ).split( '/' )
+                _b, bid, id = href.strip( '/' ).split( '/' )
             except:
                 continue
 
-            print href, nid, id, repr(name)
-            csv.writer( self.csv_fd ).writerow( [ id, nid, name, href ] )
+            #csv.writer( self.csv_fd ).writerow( [ id, bid, name, href ] )
+
+            d = FindnsaveBrandItem()
+            d['id'] = id
+            d['name'] = name
+            d['nameid'] = bid
+            d['uri'] = href
+
+            yield d
 
         next_url = self.brand_next_page( response )
-        print next_url
         if next_url is None:
             return
 

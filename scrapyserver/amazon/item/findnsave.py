@@ -22,4 +22,10 @@ class FindnsaveStoreItem( Item ):
     nameid = Field()
     uri = Field()
 
+class FindnsaveBrandItem( Item ):
+
+    id = Field()
+    name = Field()
+    nameid = Field()
+    uri = Field()
 

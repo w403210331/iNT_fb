@@ -31,3 +31,20 @@ def safe( func ):
     wrapper.__module__ = func.__module__
 
     return wrapper
+
+def safe_with_log( logger ):
+    def _safe( func ):
+        def wrapper( *args, **argkv ):
+            try:
+                return func( *args, **argkv )
+            except Exception, e:
+                logger.exception( repr( e ) )
+                return None
+
+        wrapper.__doc__ = func.__doc__
+        wrapper.__name__ = func.__name__
+        wrapper.__module__ = func.__module__
+
+        return wrapper
+
+    return _safe

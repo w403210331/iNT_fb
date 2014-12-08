@@ -26,6 +26,7 @@ class FindnsaveStoresSpider(scrapy.Spider):
     start_urls = [ rooturl + "/stores/?sort=top" ]
 
     #csv_fd = open( '/tmp/stores.csv', 'w' )
+    #csv.writer( csv_fd ).writerow( [ 'id', 'sid', 'name', 'href' ] )
 
     def parse(self, response):
 
@@ -59,7 +60,6 @@ class FindnsaveStoresSpider(scrapy.Spider):
             yield d
 
         next_url = self.store_next_page( response )
-        print next_url
         if next_url is None:
             return
 
