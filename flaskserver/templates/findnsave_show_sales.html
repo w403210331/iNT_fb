@@ -1,0 +1,73 @@
+{% extends "header.html" %}
+{% block body %}
+<script language=Javascript>
+function change(p){
+if (p == 200){
+	//document.sel.submit();
+	;
+}
+return true;
+}
+</script>
+	<h2>Findnsave Sale</h2>
+		{% if error %}<p class="error"><strong>Error:</strong> {{ error }}{% endif %}
+	<form action="{{ url_for( 'findnsave_sale' ) }}" method="post" name="sel"> <dl>
+		<dt>Key Words:
+			<input type="text" name="keywords">
+		</dt>
+		<dt>Area:
+			<select name="select_area" id="select_area" onchange="change(200)">
+				<option value="All">All</option>
+				{% for d in areas %}
+				<option value="{{d.area}}">{{d.area}}</option>
+				{% endfor %}
+			</select>
+			Store:
+			<select name="select_store" id="select_store" onchange="change(200)">
+				<option value="All">All</option>
+				{% for d in stores %}
+				<option value="{{d.name}}">{{d.name}}</option>
+				{% endfor %}
+			</select>
+			Brand:
+			<select name="select_brand" id="select_brand" onchange="change(200)">
+				<option value="All">All</option>
+				{% for d in brands %}
+				<option value="{{d.name}}">{{d.name}}</option>
+				{% endfor %}
+			</select>
+		</dt>
+		<dt>Number Items:
+			<select name="number" id="number" onchange="change(200)">
+				<option value="5" selected="selected">5</option>
+				<option value="10">10</option>
+				<option value="50">50</option>
+				<option value="100">100</option>
+				<option value="1000">1000</option>
+				<option value="10000">10000</option>
+			</select>
+		</dt>
+		<dt>Action:
+			<select name="action" id="action" onchange="change(200)">
+				<option value="show" selected="selected">show blow</option>
+				<option value="export">export to excel</option>
+			</select>
+		</dt>
+		<dd><input type="submit" value="Select"></dd>
+	</dl></form>
+	{% if sales %}
+	<center><table width=1000>
+		<tr>{%  for col in cols %}
+			<th>{{ col }}<th>
+		{%  endfor %}
+		</tr>
+		{%  for d in sales %}
+			<tr>
+			{%  for col in cols %}
+				<th>{{ d[col] }}<th>
+			{% endfor %}
+			</tr>
+		{%  endfor %}
+	</table></center>
+	{% endif %}
+{% endblock %}
