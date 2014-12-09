@@ -1,4 +1,4 @@
-
+# -*- coding: utf-8 -*-
 import time
 import json
 import logging
@@ -8,6 +8,7 @@ import mimetypes
 import conf
 from rediscli import get_cli
 from amazonapi import AmazonAPI
+from util import escape, unescape
 import genlog
 logger = genlog.logger
 
@@ -16,6 +17,8 @@ from werkzeug.datastructures import Headers
 from flask import Flask, Response, \
             request, abort, redirect, url_for, \
             render_template, session, flash
+
+import easysqllite as esql
 
 PAGE_ITEMS = conf.PAGE_ITEMS
 
@@ -350,6 +353,10 @@ def ignore_word( word = None ):
 
 @app.route( '/' )
 def root():
+    return render_template( 'index.html' )
+
+@app.route( '/amazon/' )
+def amazonserver():
     return redirect( url_for_pass( 'search' ) )
 
 @app.route( '/add/<product_id>', methods = [ 'GET', 'POST' ] )
@@ -586,6 +593,186 @@ def order_words( product_id = None, num = 1 ):
     return render_template( 'show_review_words.html',
                             error = error, words = kvs,
                             product_id = product_id )
+
+@app.route( '/findnsave/' )
+def findnsaveserver():
+    return render_template( 'findnsave.html' )
+
+def _get_findnsave_data( table, cols ):
+    error = None
+
+    sql = "select %s from `%s`" % ( ', '.join( [ '`%s`' % c for c in cols ] ), table )
+    logger.info( sql )
+    try:
+        db = esql.Database( conf.dbconf )
+        data = db.conn.read( sql )
+    except Exception as e :
+        logger.exception( repr(e) )
+        error = repr(e)
+        data = []
+
+    for d in data:
+        for k in d:
+            d[ k ] = unescape( d[ k ] )
+
+    return error, data
+
+@app.route( '/findnsave/area/' )
+def findnsave_show_area():
+    table = 'findnsave_area'
+    cols = ( 'areaid', 'area', 'short', 'state', 'url' )
+    desc = ( 'ID', 'city name', 'short', 'state', 'url' )
+
+    error, data = _get_findnsave_data( table, cols )
+    return render_template( 'findnsave_show_.html',
+                            error = error, data = data, cols = cols, desc = desc )
+
+@app.route( '/findnsave/brand/' )
+def findnsave_show_brand():
+    table = 'findnsave_brand'
+    cols = ( 'id', 'name', 'nameid', 'uri' )
+    desc = ( 'ID', 'Brand name', 'name in URI', 'URI' )
+
+    error, data = _get_findnsave_data( table, cols )
+    return render_template( 'findnsave_show_.html',
+                            error = error, data = data, cols = cols, desc = desc )
+
+@app.route( '/findnsave/category/' )
+def findnsave_show_category():
+    table = 'findnsave_category'
+    cols = ( 'id', 'name', 'nameid', 'uri' )
+    desc = ( 'ID', 'Category name', 'name in URI', 'URI' )
+
+    error, data = _get_findnsave_data( table, cols )
+    return render_template( 'findnsave_show_.html',
+                            error = error, data = data, cols = cols, desc = desc )
+
+@app.route( '/findnsave/store/' )
+def findnsave_show_store():
+    table = 'findnsave_store'
+    cols = ( 'id', 'name', 'nameid', 'uri' )
+    desc = ( 'ID', 'Category name', 'name in URI', 'URI' )
+
+    error, data = _get_findnsave_data( table, cols )
+    return render_template( 'findnsave_show_.html',
+                            error = error, data = data, cols = cols, desc = desc )
+
+
+def _findnsave_sale_download( name, data, cols ):
+    workbook = xlwt.Workbook( encoding = 'utf-8' )
+    sheet = workbook.add_sheet( 'default' )
+
+    for i, k in enumerate( cols ):
+        sheet.write( 0, i, k )
+
+    num = 1
+    for d in data:
+        for i, k in enumerate( cols ):
+            v = d[k]
+            sheet.write( num, i, v )
+        num += 1
+
+    response = Response()
+    response.status_code = 200
+
+    filename = name + '.xls'
+    output = StringIO.StringIO()
+    workbook.save( output )
+    response.data = output.getvalue()
+
+    mimetype_tuple = mimetypes.guess_type( filename )
+
+    #HTTP headers for forcing file download
+    response_headers = Headers( {
+                    'Pragma': "public",
+                    'Expires': '0',
+                    'Cache-Control': 'must-revalidate, post-check=0, pre-check=0',
+                    'Cache-Control': 'private',
+                    'Content-Type': mimetype_tuple[ 0 ] or 'application/vnd.ms-excel',
+                    'Content-Disposition': 'attachment; filename=\"%s\";' % filename,
+                    'Content-Transfer-Encoding': 'binary',
+                    'Content-Length': len( response.data ), } )
+
+    if not mimetype_tuple[ 1 ] is None:
+        response.update( { 'Content-Encoding': mimetype_tuple[ 1 ] } )
+
+    response.headers = response_headers
+
+    #as per jquery.fileDownload.js requirements
+    response.set_cookie( 'fileDownload', 'true', path = '/' )
+
+    logger.info( 'download %s, %d items' % ( filename, num - 1 ) )
+
+    return response
+
+@app.route( '/findnsave/sale/', methods=[ 'GET', 'POST' ] )
+def findnsave_sale():
+    error = None
+
+    err, areas = _get_findnsave_data( 'findnsave_area', ('area',) )
+    err, stores = _get_findnsave_data( 'findnsave_store', ('name',) )
+    err, brands = _get_findnsave_data( 'findnsave_brand', ('name',) )
+
+    if request.method == 'POST':
+        keywords = request.form[ 'keywords' ].strip()
+        area = request.form[ 'select_area' ]
+        store = request.form[ 'select_store' ]
+        brand = request.form[ 'select_brand' ]
+        num = request.form[ 'number' ]
+        action = request.form[ 'action' ]
+
+        where = []
+        if area != 'All':
+            where.append( "`area`='%s'" % area )
+        if store != 'All':
+            where.append( "`retailer`='%s'" % store )
+        if brand != 'All':
+            where.append( "`brand`='%s'" % brand )
+
+        keywords = keywords.split()
+        for kw in keywords:
+            where.append( "`name` like '%%%s%%'" % kw )
+
+        if where:
+            where = 'where ' + ' and '.join( where )
+        else:
+            where = ''
+
+        cols = ( '_ID', 'area', 'id', 'name', 'priceCurrency',
+                 'price', 'priceRegular', 'priceUtilDate', 'priceOff',
+                 'retailer', 'category', 'brand' )
+
+        sql = "select * from `%s` %s limit %s" % ( 'findnsave_sale_t', where, num )
+        logger.info( sql )
+        try:
+            db = esql.Database( conf.dbconf )
+            data = db.conn.read( sql )
+        except Exception as e :
+            logger.exception( repr(e) )
+            error = repr(e)
+            data = []
+
+        for d in data:
+            for k in d:
+                d[ k ] = unescape( d[ k ] )
+
+        if action == 'export':
+            name = ','.join( [ area, store, brand, num ] )
+            return _findnsave_sale_download( name, data, cols + ( 'desc', ) )
+
+        return render_template( 'findnsave_show_sales.html', error = error,
+                            areas = [ {'area':'newyork'} ],
+                            stores = stores,
+                            brands = brands,
+                            sales = data,
+                            cols = cols )
+
+    return render_template( 'findnsave_show_sales.html', error = error,
+                        areas = [ {'area':'newyork'} ],
+                        stores = stores,
+                        brands = brands,
+                        sales = [],
+                        cols = [] )
 
 def set_access_logger():
 
