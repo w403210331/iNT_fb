@@ -21,7 +21,8 @@ from amazon.item.amazon import AmazonReviewItem, AmazonProductItem
 from amazon.item.findnsave import FindnsaveAreaItem, \
                                   FindnsaveStoreItem, \
                                   FindnsaveBrandItem, \
-                                  FindnsaveCategoryItem
+                                  FindnsaveCategoryItem, \
+                                  FindnsaveSaleItem
 
 class AllPipeline(object):
 
@@ -45,6 +46,9 @@ class AllPipeline(object):
         elif isinstance(item, FindnsaveCategoryItem):
             return safe_with_log(spider.logger)(
                         self.process_item_findnsave_category )(item, spider)
+        elif isinstance(item, FindnsaveSaleItem):
+            return safe_with_log(spider.logger)(
+                        self.process_item_findnsave_sale )(item, spider)
 
         else:
             return item
@@ -106,3 +110,17 @@ class AllPipeline(object):
                 db.conn.write( sql )
                 spider.logger.info('update : from %s to %s' % ( repr(data[0]), repr(dict(item)) ) )
 
+    def process_item_findnsave_sale(self, item, spider):
+
+        table = 'findnsave_sale_t'
+
+        db = esql.Database( dbconf )
+        sql = "select * from `%s`" % table + \
+                " where `id` = '%s' and `area` = '%s'" %  ( item['id'], item['area'] )
+        data = db.conn.read( sql )
+
+        if not data:
+            db.__getattr__( table ).puts( [ dict(item) ] )
+            spider.logger.info('insert : ' + repr(dict(item)))
+        else:
+            pass

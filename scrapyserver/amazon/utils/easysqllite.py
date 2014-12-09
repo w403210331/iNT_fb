@@ -28,12 +28,12 @@ def escape_string(value, charset=None):
         r = r.encode(charset)
     return r
 
-def formatvalue( v ):
+def formatvalue( v, quote = True ):
     if v is None :
         return 'NULL'
     if type( v ) in ( types.IntType, types.LongType, types.FloatType ):
         return str( v )
-    if type( v ) == types.StringType and '(' in v:
+    if quote and type( v ) == types.StringType and '(' in v:
         return v
     if type( v ) == datetime.datetime :
         return  v.strftime( "'%Y-%m-%d %H:%M:%S'" )
@@ -124,7 +124,7 @@ class ConnLite( object ):
         vss = [ [ d.get( k, None ) for k in ks ] for d in datas ]
         #print ks,vss
         ks = ', '.join( k.join( ['`', '`'] ) for k in ks )
-        vss = [ '(' + ', '.join( formatvalue( v ) for v in vs ) + ')' for vs in vss ]
+        vss = [ '(' + ', '.join( formatvalue( v, quote = False ) for v in vs ) + ')' for vs in vss ]
         vss = ', '.join( vss )
         #print vss
         if ignore :
