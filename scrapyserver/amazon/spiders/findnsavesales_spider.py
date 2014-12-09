@@ -5,6 +5,8 @@ import json
 
 import scrapy
 from amazon.utils import genlog
+from amazon.utils.util import escape
+from amazon.item.findnsave import FindnsaveSaleItem
 from amazon.utils.util import first_item, safe, \
                               xpath, f_xpath, first_item_xpath, \
                               xpath_extract, fx_extract, first_item_xpath_extract
@@ -26,7 +28,7 @@ class FindnsaveStoresSpider(scrapy.Spider):
     #csv_fd = open( '/tmp/newyork_sales.csv', 'w' )
     #writer = csv.writer( csv_fd, delimiter = '\\' )
 
-    jsonfile = open( '/tmp/sales.json', 'a' )
+    #jsonfile = open( '/tmp/sales.json', 'a' )
 
     def _parse_date(self, response):
         date = f_xpath( response, '//div[contains(@class, "offer-pdp-hd") ' + \
@@ -124,7 +126,23 @@ class FindnsaveStoresSpider(scrapy.Spider):
                     response.url, response.meta[ 'th_img' ], lg_img,
                     desc, ]
 
-        self.jsonfile.write( json.dumps( data ) + '\n' )
+        d = FindnsaveSaleItem()
+        d['area'] = 'newyork'
+        d['id'] = response.meta[ 'id' ]
+        d['name'] = escape(name)
+        d['priceCurrency'] = p_c
+        d['price'] = p_p
+        d['priceRegular'] = p_r
+        d['priceUtilDate'] = p_u
+        d['priceOff'] = pct_off
+        d['retailer'] = escape(retailer)
+        d['category'] = escape(category)
+        d['brand'] = escape(brand)
+        d['desc'] = escape(desc)
+
+        yield d
+
+        #self.jsonfile.write( json.dumps( data ) + '\n' )
         logger.info( 'crawl : `' + name + '` OK' )
         return
 

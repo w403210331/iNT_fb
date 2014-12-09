@@ -32,3 +32,16 @@ class FindnsaveCategoryItem( Item ):
     nameid = Field()
     uri = Field()
 
+class FindnsaveSaleItem( Item ):
+    area = Field()
+    id = Field()
+    name = Field()
+    priceCurrency = Field()
+    price = Field()
+    priceRegular = Field()
+    priceUtilDate = Field()
+    priceOff = Field()
+    retailer = Field()
+    category = Field()
+    brand = Field()
+    desc = Field()
