@@ -55,3 +55,25 @@ CREATE TABLE `findnsave_category` (
   KEY `name` (`name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
 
+CREATE TABLE `findnsave_sale_t` (
+  `_ID` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `area` varchar(16) NOT NULL DEFAULT '',
+  `id` int(11) unsigned NOT NULL,
+  `name` varchar(128) NOT NULL DEFAULT '',
+  `priceCurrency` varchar(16) NOT NULL DEFAULT '',
+  `price` float(16) NOT NULL DEFAULT 0,
+  `priceRegular` float(16) NOT NULL DEFAULT 0,
+  `priceUtilDate` varchar(16) NOT NULL DEFAULT '',
+  `priceOff` varchar(16) NOT NULL DEFAULT '',
+  `retailer` varchar(64) NOT NULL DEFAULT '',
+  `category` varchar(128) NOT NULL DEFAULT '',
+  `brand` varchar(64) NOT NULL DEFAULT '',
+  `desc` text NOT NULL DEFAULT '',
+  PRIMARY KEY (`_ID`),
+  UNIQUE KEY `ID_area` (`id`, `area`),
+  KEY `name` (`name`),
+  KEY `retailer` (`retailer`),
+  KEY `category` (`category`),
+  KEY `brand` (`brand`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8
+
