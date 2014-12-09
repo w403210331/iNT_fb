@@ -5,3 +5,4 @@
 
 flaskserver/logs/
 scrapyserver/amazon/logs/
+ignore/
