@@ -723,15 +723,15 @@ def findnsave_sale():
 
         where = []
         if area != 'All':
-            where.append( "`area`='%s'" % area )
+            where.append( "`area`=%s" % esql.escape_string(area) )
         if store != 'All':
-            where.append( "`retailer`='%s'" % store )
+            where.append( "`retailer`=%s" % esql.escape_string(store) )
         if brand != 'All':
-            where.append( "`brand`='%s'" % brand )
+            where.append( "`brand`=%s" % esql.escape_string(brand) )
 
         keywords = keywords.split()
         for kw in keywords:
-            where.append( "`name` like '%%%s%%'" % kw )
+            where.append( "`name` like %s" %  esql.escape_string('%'+kw+'%') )
 
         if where:
             where = 'where ' + ' and '.join( where )
