@@ -730,8 +730,13 @@ def _get_categorys():
 def findnsave_sale():
     error = None
 
-    err, areas = _get_findnsave_data( 'findnsave_area', ('area',) )
-    err, stores = _get_findnsave_data( 'findnsave_store', ('name',) )
+    #err, areas = _get_findnsave_data( 'findnsave_area', ('area',) )
+    areas = [ {'area':'newyork'} ]
+    #err, stores = _get_findnsave_data( 'findnsave_store', ('name',) )
+    stores = [ { 'name' : 'Walmart' },
+               { 'name' : 'Target' },
+               { 'name' : 'Toys"R"Us' },
+            ]
     err, brands = _get_findnsave_data( 'findnsave_brand', ('name',) )
     err, categorys = _get_categorys()
 
@@ -790,7 +795,7 @@ def findnsave_sale():
             return _findnsave_sale_download( name, data, cols + ( 'desc', ) )
 
         return render_template( 'findnsave_show_sales.html', error = error,
-                            areas = [ {'area':'newyork'} ],
+                            areas = areas,
                             stores = stores,
                             brands = brands,
                             categorys = categorys,
@@ -798,7 +803,7 @@ def findnsave_sale():
                             cols = cols )
 
     return render_template( 'findnsave_show_sales.html', error = error,
-                        areas = [ {'area':'newyork'} ],
+                        areas = areas,
                         stores = stores,
                         brands = brands,
                         categorys = categorys,
