@@ -763,9 +763,9 @@ def findnsave_sale():
         else:
             where = ''
 
-        cols = ( '_ID', 'area', 'id', 'name', 'priceCurrency',
-                 'price', 'priceRegular', 'priceUtilDate', 'priceOff',
-                 'retailer', 'category', 'brand' )
+        cols = ( '_ID', 'area', 'name',
+                 'retailer', 'brand', 'category',
+                 'price', 'priceRegular', 'priceOff', 'priceUtilDate', )
 
         sql = "select * from `%s` %s" % ( 'findnsave_sale_t', where, )
         if num != 'total':
@@ -782,6 +782,8 @@ def findnsave_sale():
         for d in data:
             for k in d:
                 d[ k ] = unescape( d[ k ] )
+                if d[ k ] == '':
+                    d[ k ] = 'not specified'
 
         if action == 'export':
             name = ','.join( [ area, store, brand, num ] )
