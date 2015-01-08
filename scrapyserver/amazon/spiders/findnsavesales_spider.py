@@ -24,6 +24,8 @@ class FindnsaveStoresSpider(scrapy.Spider):
     rooturl = "http://%s.findnsave.com" % location
 
     start_urls = [ rooturl + "/store/Walmart/10175/" ]
+    #start_urls = [ rooturl + "/store/Target/10002/" ]
+    #start_urls = [ rooturl + "/store/ToysRUs/10011/" ]
 
     #csv_fd = open( '/tmp/newyork_sales.csv', 'w' )
     #writer = csv.writer( csv_fd, delimiter = '\\' )
