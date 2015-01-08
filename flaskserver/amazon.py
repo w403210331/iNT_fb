@@ -598,18 +598,27 @@ def order_words( product_id = None, num = 1 ):
 def findnsaveserver():
     return render_template( 'findnsave.html' )
 
-def _get_findnsave_data( table, cols ):
+def _exc_sql( sql ):
     error = None
 
-    sql = "select %s from `%s`" % ( ', '.join( [ '`%s`' % c for c in cols ] ), table )
-    logger.info( sql )
     try:
         db = esql.Database( conf.dbconf )
         data = db.conn.read( sql )
     except Exception as e :
         logger.exception( repr(e) )
         error = repr(e)
-        data = []
+        data = None
+
+    return error, data
+
+def _get_findnsave_data( table, cols ):
+    error = None
+
+    sql = "select %s from `%s`" % ( ', '.join( [ '`%s`' % c for c in cols ] ), table )
+    logger.info( sql )
+
+    error, data = _exc_sql( sql )
+    data = data or []
 
     for d in data:
         for k in d:
@@ -705,6 +714,18 @@ def _findnsave_sale_download( name, data, cols ):
 
     return response
 
+def _get_categorys():
+
+    error, categorys = _exc_sql( 'select distinct `category` from `findnsave_sale_t` limit 500' )
+    categorys = categorys or []
+    for d in categorys:
+        for k in d:
+            d[ k ] = unescape( d[ k ] )
+    if categorys:
+        categorys.sort( key = lambda x:x['category'] )
+
+    return error, categorys
+
 @app.route( '/findnsave/sale/', methods=[ 'GET', 'POST' ] )
 def findnsave_sale():
     error = None
@@ -712,12 +733,14 @@ def findnsave_sale():
     err, areas = _get_findnsave_data( 'findnsave_area', ('area',) )
     err, stores = _get_findnsave_data( 'findnsave_store', ('name',) )
     err, brands = _get_findnsave_data( 'findnsave_brand', ('name',) )
+    err, categorys = _get_categorys()
 
     if request.method == 'POST':
         keywords = request.form[ 'keywords' ].strip()
         area = request.form[ 'select_area' ]
         store = request.form[ 'select_store' ]
         brand = request.form[ 'select_brand' ]
+        category = request.form[ 'select_category' ]
         num = request.form[ 'number' ]
         action = request.form[ 'action' ]
 
@@ -728,6 +751,8 @@ def findnsave_sale():
             where.append( "`retailer`=%s" % esql.escape_string(store) )
         if brand != 'All':
             where.append( "`brand`=%s" % esql.escape_string(brand) )
+        if category != 'All':
+            where.append( "`category`=%s" % esql.escape_string(category) )
 
         keywords = keywords.split()
         for kw in keywords:
@@ -742,7 +767,9 @@ def findnsave_sale():
                  'price', 'priceRegular', 'priceUtilDate', 'priceOff',
                  'retailer', 'category', 'brand' )
 
-        sql = "select * from `%s` %s limit %s" % ( 'findnsave_sale_t', where, num )
+        sql = "select * from `%s` %s" % ( 'findnsave_sale_t', where, )
+        if num != 'total':
+            sql += ' limit ' + num
         logger.info( sql )
         try:
             db = esql.Database( conf.dbconf )
@@ -764,6 +791,7 @@ def findnsave_sale():
                             areas = [ {'area':'newyork'} ],
                             stores = stores,
                             brands = brands,
+                            categorys = categorys,
                             sales = data,
                             cols = cols )
 
@@ -771,6 +799,7 @@ def findnsave_sale():
                         areas = [ {'area':'newyork'} ],
                         stores = stores,
                         brands = brands,
+                        categorys = categorys,
                         sales = [],
                         cols = [] )
 
