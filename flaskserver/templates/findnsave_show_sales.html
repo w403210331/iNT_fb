@@ -36,15 +36,20 @@ return true;
 				<option value="{{d.name}}">{{d.name}}</option>
 				{% endfor %}
 			</select>
+			Category:
+			<select name="select_category" id="select_category" onchange="change(200)">
+				<option value="All">All</option>
+				{% for d in categorys %}
+				<option value="{{d.category}}">{{d.category}}</option>
+				{% endfor %}
+			</select>
 		</dt>
 		<dt>Number Items:
 			<select name="number" id="number" onchange="change(200)">
-				<option value="5" selected="selected">5</option>
-				<option value="10">10</option>
+				<option value="30" selected="selected">30</option>
 				<option value="50">50</option>
 				<option value="100">100</option>
-				<option value="1000">1000</option>
-				<option value="10000">10000</option>
+				<option value="total">total</option>
 			</select>
 		</dt>
 		<dt>Action:
