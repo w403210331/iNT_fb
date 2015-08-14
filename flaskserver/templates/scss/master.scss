@@ -1,0 +1,59 @@
+// Layout
+html, body, .container, .row {
+  height: 100%;
+}
+body {
+  padding-top: 70px;
+}
+
+// Navbar
+.navbar-default {
+  background-color: hsl(222, 54%, 24%);
+  border: 0;
+  border-radius: 0;
+  color: hsl(0, 0%, 100%);
+
+  .navbar-nav > li > a {
+    color: hsl(0, 0%, 100%);
+  }
+}
+.navbar-brand {
+  padding: 10px 20px;
+
+  > img {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+// Sidebar
+.sidebar-nav {
+  background-color: hsl(192, 7%, 86%);
+  bottom: 0;
+  display: block;
+  left: 0;
+  padding: 50px 0 0;
+  position: fixed;
+  top: 0;
+  z-index: 1000;
+}
+.sidebar-nav-items {
+  list-style: none;
+  padding: 0;
+}
+.sidebar-nav-item {
+  a {
+    background: hsl(0, 0%, 100%);
+    background: linear-gradient(to bottom, hsl(0, 0%, 100%) 0%, hsl(210, 2%, 81%) 100%);
+    border-left: 6px solid transparent;
+    color: hsl(0, 0%, 0%);
+    display: block;
+    font-size: 1.6rem;
+    padding: 20px 20px 20px 70px;
+  }
+  &.active {
+    a {
+      border-left: 6px solid hsl(22, 78%, 59%);
+    }
+  }
+}
