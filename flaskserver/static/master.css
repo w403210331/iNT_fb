@@ -1,0 +1,20 @@
+html, body, .container, .row { height: 100%; }
+
+body { padding-top: 70px; }
+
+.navbar-default { background-color: #1c305e; border: 0; border-radius: 0; color: white; }
+
+.navbar-default .navbar-nav > li > a { color: white; }
+
+.navbar-brand { padding: 10px 20px; }
+
+.navbar-brand > img { height: 100%; width: 100%; }
+
+.sidebar-nav { background-color: #d9ddde; bottom: 0; display: block; left: 0; padding: 50px 0 0; position: fixed; top: 0; z-index: 1000; }
+
+.sidebar-nav-items { list-style: none; padding: 0; }
+
+.sidebar-nav-item a { background: white; background: -webkit-linear-gradient(top, white 0%, #cecfd0 100%); background: linear-gradient(to bottom, white 0%, #cecfd0 100%); border-left: 6px solid transparent; color: black; display: block; font-size: 1.6rem; padding: 20px 20px 20px 70px; }
+
+.sidebar-nav-item.active a { border-left: 6px solid #e88145; }
+/*# sourceMappingURL=master.css.map */
